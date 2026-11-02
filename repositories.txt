@@ -1,0 +1,11 @@
+# The repositories whose latest published release (a draft is never taken)
+# goes into the apt and dnf repositories. One a line, owner/name; the .deb
+# and .rpm files of the release are taken, and checked against its
+# SHA256SUMS. Add a plugin by adding its line.
+mateusrdp/oxiguitar
+mateusrdp/oxiguitar-guitarpro
+mateusrdp/oxiguitar-midi
+mateusrdp/oxiguitar-wav
+mateusrdp/oxiguitar-alsa
+mateusrdp/oxiguitar-pipewire
+mateusrdp/oxiguitar-nam
