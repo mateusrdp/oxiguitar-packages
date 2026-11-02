@@ -6,7 +6,7 @@
 # repository in repositories.txt into OUT-DIR/deb and OUT-DIR/rpm, checking
 # each against the release's SHA256SUMS. A repository without a published
 # release is skipped with a notice; a file whose sum is missing or wrong stops
-# the run. Needs gh (GH_TOKEN) and sha256sum.
+# the run. Needs gh (GH_TOKEN, to list releases), curl and sha256sum.
 #
 # Usage: scripts/fetch-packages.sh OUT-DIR [REPOSITORIES-FILE]
 set -euo pipefail
@@ -27,8 +27,14 @@ while read -r repo; do
     fi
     dir="$tmp/${repo//\//_}"
     mkdir -p "$dir"
-    gh release download "$tag" --repo "$repo" --dir "$dir" \
-        --pattern '*.deb' --pattern '*.rpm' --pattern SHA256SUMS
+    # curl, not gh release download: public releases need no token.
+    while read -r asset; do
+        case "$asset" in
+            *.deb | *.rpm | SHA256SUMS)
+                curl -fsSL --retry 5 -o "$dir/$asset" "https://github.com/$repo/releases/download/$tag/$asset"
+                ;;
+        esac
+    done < <(gh api "repos/$repo/releases/tags/$tag" --jq '.assets[].name')
     [[ -f "$dir/SHA256SUMS" ]] || { echo "::error::$repo $tag has no SHA256SUMS"; exit 1; }
     count=0
     for f in "$dir"/*.deb "$dir"/*.rpm; do

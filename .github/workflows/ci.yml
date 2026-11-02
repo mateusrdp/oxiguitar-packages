@@ -185,10 +185,27 @@ jobs:
       - name: Install from it with apt and dnf
         run: scripts/test-install.sh "$RUNNER_TEMP/site" oxiguitar-test /usr/lib/oxiguitar/plugins/test.oxp
 
+  winget:
+    name: Winget manifests
+    runs-on: windows-2025
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v5
+      - name: Make sample manifests and validate them
+        env:
+          WINGET_SAMPLE: "1"
+        run: |
+          for repo in guitarpro midi wav wasapi nam; do
+            scripts/make-winget-manifests.sh "mateusrdp/oxiguitar-$repo" v0.1.0 "out/$repo"
+            winget validate --manifest "out/$repo"
+          done
+
   ci-success:
     name: ci-success
     if: always()
-    needs: [rust, fmt, lint, test, deny, dco, repositories]
+    needs: [rust, fmt, lint, test, deny, dco, repositories, winget]
     runs-on: ubuntu-24.04
     steps:
       - name: Every job passed

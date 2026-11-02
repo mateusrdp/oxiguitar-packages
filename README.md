@@ -49,6 +49,12 @@ signatures (job "Repositories" in CI).
 
 To add a plugin, add its repository to `repositories.txt`.
 
+## winget
+
+See [docs/winget.md](docs/winget.md): the manifests of a package's first
+version are made by `scripts/make-winget-manifests.sh` and submitted by hand;
+later versions are submitted by the plugin repository's publish workflow.
+
 ## The signing key
 
 One RSA 4096 key signs both repositories. The maintainer makes it once and
