@@ -1,0 +1,111 @@
+# Builds the apt and dnf repositories from the latest published release of
+# every repository in repositories.txt, signs them, and publishes them on
+# GitHub Pages.
+#
+# What starts it:
+#   - the `plugin-published` event, which a plugin repository's publish
+#     workflow sends when the maintainer publishes a release (secret
+#     PACKAGES_TOKEN over there). Events run on the default branch, develop,
+#     but Pages is deployed from main only, so the first job asks for the same
+#     workflow to run on main;
+#   - "Run workflow" by hand, on main.
+#
+# Needs these secrets in this repository (see README.md):
+#   APT_SIGNING_KEY         the armoured private key, `gpg --armor --export-secret-keys`
+#   APT_SIGNING_PASSPHRASE  its passphrase (leave unset for a key without one)
+name: Site
+
+on:
+  repository_dispatch:
+    types: [plugin-published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: site
+  cancel-in-progress: false
+
+jobs:
+  hand-over:
+    name: Run on main
+    if: github.event_name == 'repository_dispatch'
+    runs-on: ubuntu-24.04
+    permissions:
+      actions: write
+    steps:
+      - name: Start the workflow on main
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "Told by ${{ github.event.client_payload.repository }} about ${{ github.event.client_payload.tag }}."
+          gh workflow run site.yml --repo "$GITHUB_REPOSITORY" --ref main
+
+  build:
+    name: Build and sign
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Only from main
+        run: |
+          if [[ "$GITHUB_REF" != "refs/heads/main" ]]; then
+            echo "::error::The site is built from main (this is $GITHUB_REF)."
+            exit 1
+          fi
+      - uses: actions/checkout@v5
+      - name: Tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y apt-utils createrepo-c rpm gnupg
+      - name: Import the signing key
+        env:
+          APT_SIGNING_KEY: ${{ secrets.APT_SIGNING_KEY }}
+          APT_SIGNING_PASSPHRASE: ${{ secrets.APT_SIGNING_PASSPHRASE }}
+        run: |
+          if [[ -z "$APT_SIGNING_KEY" ]]; then
+            echo "::error::The secret APT_SIGNING_KEY isn't set (see README.md)."
+            exit 1
+          fi
+          export GNUPGHOME="$RUNNER_TEMP/gnupg"
+          mkdir -m 700 "$GNUPGHOME"
+          printf '%s\n' "$APT_SIGNING_KEY" | gpg --batch --import
+          key="$(gpg --with-colons --list-secret-keys | awk -F: '/^fpr:/ { print $10; exit }')"
+          {
+            echo "GNUPGHOME=$GNUPGHOME"
+            echo "GPG_KEY_ID=$key"
+          } >> "$GITHUB_ENV"
+          if [[ -n "$APT_SIGNING_PASSPHRASE" ]]; then
+            printf '%s' "$APT_SIGNING_PASSPHRASE" > "$RUNNER_TEMP/passphrase"
+            chmod 600 "$RUNNER_TEMP/passphrase"
+            echo "GPG_PASSPHRASE_FILE=$RUNNER_TEMP/passphrase" >> "$GITHUB_ENV"
+          fi
+      - name: Fetch the packages
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: scripts/fetch-packages.sh "$RUNNER_TEMP/packages"
+      - name: Build the site
+        run: scripts/build-site.sh "$RUNNER_TEMP/packages" "$RUNNER_TEMP/site"
+      - name: Install a package from it
+        run: |
+          pkg="$(ls "$RUNNER_TEMP/site/apt/pool/main" | grep -E '^oxiguitar-' | head -n 1 | cut -d_ -f1)"
+          if [[ -n "$pkg" ]]; then
+            scripts/test-install.sh "$RUNNER_TEMP/site" "$pkg" /usr/lib/oxiguitar/plugins
+          fi
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: ${{ runner.temp }}/site
+
+  deploy:
+    name: Publish on Pages
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

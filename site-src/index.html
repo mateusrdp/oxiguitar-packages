@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OxiGuitar packages</title>
+<style>
+  :root { color-scheme: light dark; --fg: #1d1d1f; --bg: #fff; --mute: #666; --code: #f2f2f4; }
+  @media (prefers-color-scheme: dark) { :root { --fg: #eee; --bg: #17171a; --mute: #aaa; --code: #26262b; } }
+  body { margin: 0 auto; padding: 24px 16px 64px; max-width: 46rem; font: 16px/1.5 system-ui, sans-serif; color: var(--fg); background: var(--bg); }
+  h1 { font-size: 1.6rem; } h2 { font-size: 1.15rem; margin-top: 2rem; }
+  pre { background: var(--code); padding: 12px; border-radius: 6px; overflow-x: auto; }
+  code { font: 0.92em ui-monospace, monospace; }
+  p.mute { color: var(--mute); }
+</style>
+</head>
+<body>
+<h1>OxiGuitar packages</h1>
+<p>The apt and dnf repositories of <a href="https://github.com/mateusrdp/oxiguitar">OxiGuitar</a>, a free guitar tablature viewer, editor and player, and of its plugins. Each package is the one attached to the release of its own repository; this site only signs and lists them.</p>
+
+<h2>Debian, Ubuntu and relatives (apt)</h2>
+<pre><code>sudo install -d -m 0755 /etc/apt/keyrings
+sudo curl -fsSL @URL@/oxiguitar.gpg -o /etc/apt/keyrings/oxiguitar.gpg
+sudo curl -fsSL @URL@/oxiguitar.sources -o /etc/apt/sources.list.d/oxiguitar.sources
+sudo apt update
+sudo apt install oxiguitar</code></pre>
+<p>Plugins are packages named <code>oxiguitar-guitarpro</code>, <code>oxiguitar-midi</code> and so on; <code>apt install oxiguitar</code> suggests the ones you need. <code>apt upgrade</code> keeps all of them current.</p>
+
+<h2>Fedora and relatives (dnf)</h2>
+<pre><code>sudo curl -fsSL @URL@/oxiguitar.repo -o /etc/yum.repos.d/oxiguitar.repo
+sudo dnf install oxiguitar</code></pre>
+
+<h2>The signing key</h2>
+<p>Both repositories are signed with one key, fingerprint <code>@FINGERPRINT@</code>: <a href="oxiguitar.asc">oxiguitar.asc</a> (armoured) or <a href="oxiguitar.gpg">oxiguitar.gpg</a> (binary). Check the fingerprint against the one in the <a href="https://github.com/mateusrdp/oxiguitar-packages">repository's README</a>.</p>
+
+<p class="mute">Nothing here is ever downloaded by OxiGuitar itself. The list of packages in this build is in <a href="packages.txt">packages.txt</a>.</p>
+</body>
+</html>
