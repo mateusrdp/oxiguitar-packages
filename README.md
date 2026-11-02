@@ -70,7 +70,7 @@ Actions): `APT_SIGNING_KEY`, the armoured private key, and
 `APT_SIGNING_PASSPHRASE`, its passphrase (unset for a key without one). The
 fingerprint is then written here:
 
-> Fingerprint: _not set yet_
+> Fingerprint: `AFA3B6C603BCA98F123CA94848BDD452DF318B45`
 
 The site is deployed from `main`, so the first build comes after `develop` is
 merged into `main` (Actions, Site, Run workflow, branch `main`).
