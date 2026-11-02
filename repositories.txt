@@ -8,3 +8,4 @@ mateusrdp/oxiguitar-midi
 mateusrdp/oxiguitar-wav
 mateusrdp/oxiguitar-alsa
 mateusrdp/oxiguitar-pipewire
+mateusrdp/oxiguitar-nam

@@ -29,7 +29,7 @@ sudo curl -fsSL https://mateusrdp.github.io/oxiguitar-packages/oxiguitar.repo -o
 sudo dnf install oxiguitar
 ```
 
-Plugins are the packages `oxiguitar-guitarpro`, `oxiguitar-midi`, and so on.
+Plugins are the packages `oxiguitar-guitarpro`, `oxiguitar-midi`, `oxiguitar-nam`, and so on. The Windows-only (WASAPI) and macOS-only (CoreAudio) audio plugins are not in these repositories.
 
 ## How it works
 
