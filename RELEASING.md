@@ -3,7 +3,9 @@
 Everything is done on github.com. A release is two clicks.
 
 1. **Actions > Release > Run workflow** (in this repository). Pick the
-   repository (`oxiguitar`, `oxiguitar-guitarpro`, ...) and the version:
+   repository (`oxiguitar`, `oxiguitar-guitarpro`, ...; any in `repositories.txt` or
+   `other-repositories.txt`, the second being the Windows-only and macOS-only
+   plugins, which have no apt or dnf packages) and the version:
    `patch`, `minor`, `major` (counted from its latest `v*` tag) or a number
    such as `0.13.0`. The workflow checks that `develop` is green, changes
    the files that name the version and moves the CHANGELOG's `[Unreleased]`
