@@ -19,7 +19,7 @@ sudo install -d -m 0755 /etc/apt/keyrings
 sudo curl -fsSL https://mateusrdp.github.io/oxiguitar-packages/oxiguitar.gpg -o /etc/apt/keyrings/oxiguitar.gpg
 sudo curl -fsSL https://mateusrdp.github.io/oxiguitar-packages/oxiguitar.sources -o /etc/apt/sources.list.d/oxiguitar.sources
 sudo apt update
-sudo apt install oxiguitar
+sudo apt install -o APT::Install-Suggests="true" oxiguitar
 ```
 
 Fedora and relatives:
@@ -28,6 +28,8 @@ Fedora and relatives:
 sudo curl -fsSL https://mateusrdp.github.io/oxiguitar-packages/oxiguitar.repo -o /etc/yum.repos.d/oxiguitar.repo
 sudo dnf install oxiguitar
 ```
+
+`oxiguitar` recommends the Guitar Pro, MIDI, ALSA and PipeWire plugins (apt installs recommended packages by default) and suggests `oxiguitar-nam`; the option above installs the suggestions too.
 
 Plugins are the packages `oxiguitar-guitarpro`, `oxiguitar-midi`, `oxiguitar-nam`, and so on. The Windows-only (WASAPI) and macOS-only (CoreAudio) audio plugins are not in these repositories.
 

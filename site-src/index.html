@@ -23,8 +23,8 @@
 sudo curl -fsSL @URL@/oxiguitar.gpg -o /etc/apt/keyrings/oxiguitar.gpg
 sudo curl -fsSL @URL@/oxiguitar.sources -o /etc/apt/sources.list.d/oxiguitar.sources
 sudo apt update
-sudo apt install oxiguitar</code></pre>
-<p>Plugins are packages named <code>oxiguitar-guitarpro</code>, <code>oxiguitar-midi</code> and so on; <code>apt install oxiguitar</code> suggests the ones you need. <code>apt upgrade</code> keeps all of them current.</p>
+sudo apt install -o APT::Install-Suggests="true" oxiguitar</code></pre>
+<p>Plugins are packages named <code>oxiguitar-guitarpro</code>, <code>oxiguitar-midi</code> and so on. <code>oxiguitar</code> recommends the Guitar Pro, MIDI, ALSA and PipeWire ones, which apt installs with it, and suggests <code>oxiguitar-nam</code> (amp models), which the option <code>-o APT::Install-Suggests="true"</code> installs too. <code>apt upgrade</code> keeps all of them current.</p>
 
 <h2>Fedora and relatives (dnf)</h2>
 <pre><code>sudo curl -fsSL @URL@/oxiguitar.repo -o /etc/yum.repos.d/oxiguitar.repo
