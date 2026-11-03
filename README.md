@@ -37,6 +37,40 @@ Plugins are the packages `oxiguitar-guitarpro`, `oxiguitar-midi`, `oxiguitar-nam
 
 One button on GitHub, then publish the draft: see [RELEASING.md](RELEASING.md).
 
+## Plugin packaging
+
+The plugins' own release workflows call two reusable workflows from here, so
+a change to the packaging never waits for an OxiGuitar release:
+
+- [`plugin-release.yml`](.github/workflows/plugin-release.yml) builds a
+  plugin's `.oxp` files for Linux (x86_64, ARM64), Windows (x86_64, ARM64)
+  and macOS, and makes a zip per target, a `.deb` and `.rpm`
+  (`oxiguitar-NAME`), a per-user Windows installer, a macOS `.pkg` and
+  `SHA256SUMS`, installs and removes each package on Debian, Fedora, Windows
+  and macOS, and on a `v*` tag makes a draft release.
+- [`plugin-publish.yml`](.github/workflows/plugin-publish.yml) runs when that
+  draft is published: it checks the release holds every file and tells this
+  repository (apt, dnf) and the Homebrew tap.
+
+A plugin repository calls them `@main`:
+
+```yaml
+jobs:
+  release:
+    uses: mateusrdp/oxiguitar-packages/.github/workflows/plugin-release.yml@main
+    with:
+      name: midi
+      title: "MIDI (SoundFont, SFZ)"
+      description: "Plays scores with SoundFont, DLS and SFZ sound sets."
+    permissions:
+      contents: write
+```
+
+The scripts they run are in [`scripts/plugin-package/`](scripts/plugin-package).
+Every pull request that touches them tries the whole release on the two
+do-nothing plugins in [`plugins/trial/`](plugins/trial)
+(`plugin-release-try.yml`), whose files stay under the run as test builds.
+
 ## How it works
 
 Nothing is stored here but the scripts. Each time the site is built

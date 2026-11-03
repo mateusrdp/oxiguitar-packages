@@ -7,11 +7,10 @@
 # every architecture, like the sound-set installer's), so the build of the site and its install
 # test don't depend on any release existing.
 #
-# Usage: scripts/make-test-packages.sh OXIGUITAR-SCRIPTS-DIR OUT-DIR
-#   OXIGUITAR-SCRIPTS-DIR  scripts/plugin-package of a checkout of
-#                          mateusrdp/oxiguitar
+# Usage: scripts/make-test-packages.sh SCRIPTS-DIR OUT-DIR
+#   SCRIPTS-DIR  the packaging scripts, this repository's scripts/plugin-package
 set -euo pipefail
-tools="$(cd "${1:?usage: make-test-packages.sh OXIGUITAR-SCRIPTS-DIR OUT-DIR}" && pwd)"
+tools="$(cd "${1:?usage: make-test-packages.sh SCRIPTS-DIR OUT-DIR}" && pwd)"
 out="${2:?}"
 mkdir -p "$out/deb" "$out/rpm"
 work="$(mktemp -d)"

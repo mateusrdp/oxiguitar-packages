@@ -1,0 +1,13 @@
+{
+  "interface": "1.4",
+  "id": "oxiguitar.trial-first",
+  "name": "Trial (first)",
+  "version": "0.1.0",
+  "description": "Passes every track's sound through untouched. For trying the plugin release workflow; never shipped.",
+  "authors": ["The OxiGuitar contributors"],
+  "license": "GPL-3.0-or-later",
+  "homepage": "https://github.com/mateusrdp/oxiguitar-packages",
+  "effects": [
+    { "id": "pass", "name": "Pass through" }
+  ]
+}
