@@ -29,7 +29,7 @@ sudo curl -fsSL https://mateusrdp.github.io/oxiguitar-packages/oxiguitar.repo -o
 sudo dnf install oxiguitar
 ```
 
-`oxiguitar` recommends the Guitar Pro, MIDI, ALSA and PipeWire plugins (apt installs recommended packages by default) and suggests `oxiguitar-nam`; the option above installs the suggestions too.
+`oxiguitar` recommends the Guitar Pro, MIDI, ALSA and PipeWire plugins (apt installs recommended packages by default) and suggests `oxiguitar-nam`; the option above installs the suggestions too. The MIDI plugin suggests `oxiguitar-bettersounds-soundfonts`, the recommended sound sets: installing it asks whether to download them now (about 1.2 GB; no is the default), and the command `oxiguitar-install-sounds` chooses and downloads them any time. It is the same package on every architecture.
 
 Plugins are the packages `oxiguitar-guitarpro`, `oxiguitar-midi`, `oxiguitar-nam`, and so on. The Windows-only (WASAPI) and macOS-only (CoreAudio) audio plugins are not in these repositories.
 

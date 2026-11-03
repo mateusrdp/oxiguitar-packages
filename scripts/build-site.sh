@@ -71,10 +71,17 @@ done
 
 # ---- dnf -----------------------------------------------------------------
 if [[ ${#rpms[@]} -gt 0 ]]; then
+    # A noarch package (the sound-set installer) goes into every architecture's
+    # repository, as the repository file asks for $basearch only.
+    for arch in x86_64 aarch64; do mkdir -p "$site/rpm/$arch"; done
     for rpm in "${rpms[@]}"; do
         arch="$(rpm -qp --qf '%{ARCH}' "$rpm" 2> /dev/null)"
-        mkdir -p "$site/rpm/$arch"
-        cp "$rpm" "$site/rpm/$arch/"
+        if [[ "$arch" == noarch ]]; then
+            for dir in "$site"/rpm/*/; do cp "$rpm" "$dir"; done
+        else
+            mkdir -p "$site/rpm/$arch"
+            cp "$rpm" "$site/rpm/$arch/"
+        fi
     done
     sign_cmd="gpg --batch --yes --pinentry-mode loopback"
     [[ -n "${GPG_PASSPHRASE_FILE:-}" ]] && sign_cmd="$sign_cmd --passphrase-file $GPG_PASSPHRASE_FILE"

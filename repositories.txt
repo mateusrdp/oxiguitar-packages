@@ -9,3 +9,4 @@ mateusrdp/oxiguitar-wav
 mateusrdp/oxiguitar-alsa
 mateusrdp/oxiguitar-pipewire
 mateusrdp/oxiguitar-nam
+mateusrdp/oxiguitar-bettersounds-soundfonts
