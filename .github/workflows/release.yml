@@ -1,4 +1,5 @@
-# Release one of the repositories listed in repositories.txt, from this page:
+# Release one of the repositories listed in repositories.txt (the apt and dnf
+# ones) or other-repositories.txt, from this page:
 # Actions > Release > Run workflow. It prepares the release, merges develop
 # into main, tags the merge commit and pushes the tag, which starts that
 # repository's own Release workflow (builds, tests, and a draft release).
@@ -18,7 +19,7 @@ on:
   workflow_dispatch:
     inputs:
       repository:
-        description: "Which repository, by name: oxiguitar, oxiguitar-guitarpro, ... (as in repositories.txt)"
+        description: "Which repository, by name: oxiguitar, oxiguitar-guitarpro, ... (as in repositories.txt or other-repositories.txt)"
         required: true
         default: oxiguitar
       version:
@@ -52,8 +53,8 @@ jobs:
       - name: Check the repository and the version asked for
         run: |
           [[ "$REPO" =~ ^[A-Za-z0-9._-]+$ ]] || { echo "::error::'$REPO' is not a repository name"; exit 1; }
-          grep -v '^#' repositories.txt | grep -qxF "$OWNER/$REPO" \
-            || { echo "::error::$OWNER/$REPO is not in repositories.txt"; exit 1; }
+          cat repositories.txt other-repositories.txt | grep -v '^#' | grep -qxF "$OWNER/$REPO" \
+            || { echo "::error::$OWNER/$REPO is in neither repositories.txt nor other-repositories.txt"; exit 1; }
           [[ "$WANTED" =~ ^(patch|minor|major|[0-9]+\.[0-9]+\.[0-9]+)$ ]] \
             || { echo "::error::version must be patch, minor, major or like 0.13.0"; exit 1; }
 
