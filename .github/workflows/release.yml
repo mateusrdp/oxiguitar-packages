@@ -10,8 +10,13 @@
 # RELEASE_APP_KEY, set up once: see RELEASING.md), which may push to develop
 # and main and create tags where a person would otherwise have to.
 #
-# Each repository provides scripts/release/bump.sh VERSION DATE, which
-# changes the files that name the version and the CHANGELOG, and nothing else.
+# The versions are changed by this repository's scripts/release/bump.sh,
+# which finds them by itself in a plugin repository (Cargo.toml, the
+# manifests, Cargo.lock) or a VERSION file, and moves the CHANGELOG's
+# [Unreleased] section under the new version. A repository with files of
+# its own that name the version (OxiGuitar itself: the metainfo, the Debian
+# changelog) has its own scripts/release/bump.sh VERSION DATE, used instead.
+# Nothing has to be added to a new plugin repository for it to be released.
 name: Release
 run-name: Release ${{ inputs.repository }} ${{ inputs.version }}${{ inputs.dry_run && ' (dry run)' || '' }}
 
@@ -125,14 +130,22 @@ jobs:
             echo "::error::v$version exists already"; exit 1
           fi
           echo "version=$version" >> "$GITHUB_OUTPUT"
+          # The first release may keep the version the repository was made with.
+          echo "first=$([[ -z "$latest" ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
           echo "Releasing $version (latest tag: ${latest:-none})"
 
       - name: Prepare the release
         working-directory: target
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          FIRST_RELEASE: ${{ steps.version.outputs.first }}
         run: |
           set -euo pipefail
-          [[ -x scripts/release/bump.sh ]] || { echo "::error::$REPO has no scripts/release/bump.sh yet"; exit 1; }
-          scripts/release/bump.sh "${{ steps.version.outputs.version }}" "$(date -u +%F)"
+          if [[ -x scripts/release/bump.sh ]]; then
+            scripts/release/bump.sh "$VERSION" "$(date -u +%F)"
+          else
+            "$GITHUB_WORKSPACE/scripts/release/bump.sh" . "$VERSION" "$(date -u +%F)"
+          fi
           {
             echo "### Release ${{ steps.version.outputs.version }} of $REPO"
             echo '```diff'

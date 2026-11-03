@@ -7,9 +7,12 @@ Everything is done on github.com. A release is two clicks.
    `other-repositories.txt`, the second being the Windows-only and macOS-only
    plugins, which have no apt or dnf packages) and the version:
    `patch`, `minor`, `major` (counted from its latest `v*` tag) or a number
-   such as `0.13.0`. The workflow checks that `develop` is green, changes
-   the files that name the version and moves the CHANGELOG's `[Unreleased]`
-   section under the new version, commits that on `develop`, waits for CI,
+   such as `0.13.0` (a repository's first release needs the number, and may
+   keep the version it was made with, such as `0.1.0`). The workflow checks
+   that `develop` is green, changes the files that name the version (it finds
+   them in every plugin repository by itself; OxiGuitar has a
+   `scripts/release/bump.sh` of its own for its extra ones) and moves the
+   CHANGELOG's `[Unreleased]` section under the new version, commits that on `develop`, waits for CI,
    merges `develop` into `main` with a merge commit, tags that commit
    `vX.Y.Z` and pushes. The tag starts the repository's own Release
    workflow, which builds, tests and makes a **draft** release.
@@ -17,6 +20,11 @@ Everything is done on github.com. A release is two clicks.
    workflow is green. Publishing starts the Site workflow here, which
    rebuilds the signed apt and dnf repositories, and the Homebrew pull
    requests.
+
+A plugin is released on its own: neither OxiGuitar nor any other plugin
+needs a release with it. Its packages are made by this repository's
+`plugin-release.yml` (`@main`), so a change to the packaging, once merged
+into `main` here, is what the plugin's next release uses.
 
 Tick "Only prepare the release" (dry run) first when in doubt: it shows what
 would change and pushes nothing.
@@ -74,11 +82,10 @@ requests. For each repository that is released (`oxiguitar` and every plugin):
    rule, and add the App under "Allow specified actors to bypass required
    pull requests" and under the push restrictions, if ticked.)
 
-Shortcut for the plugin repositories: do it in `oxiguitar` first, then run
-`scripts/new-repo.sh NAME` from a checkout of oxiguitar for each plugin
-(it copies oxiguitar's rulesets, bypass list included, and leaves everything
-that already matches alone). New plugin repositories made with the script get
-the bypass from the start.
+Every repository made with OxiGuitar's `scripts/new-repo.sh` (which you run
+to create one) gets the bypass from the start, so this is only for a
+repository made before the App existed. As of 3 Nov 2026 every released
+repository has it except `oxiguitar-bettersounds-soundfonts`.
 
 ### 4. Try it
 
