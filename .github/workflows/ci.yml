@@ -181,6 +181,13 @@ jobs:
       - name: Install an architecture-independent package from it
         run: scripts/test-install.sh "$RUNNER_TEMP/site" oxiguitar-testall /usr/share/oxiguitar-testall/hello
 
+  release-bump:
+    name: Release version bump
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - run: scripts/release/test-bump.sh
+
   winget:
     name: Winget manifests
     runs-on: windows-2025
@@ -201,7 +208,7 @@ jobs:
   ci-success:
     name: ci-success
     if: always()
-    needs: [rust, fmt, lint, test, deny, dco, repositories, winget]
+    needs: [rust, fmt, lint, test, deny, dco, repositories, release-bump, winget]
     runs-on: ubuntu-24.04
     steps:
       - name: Every job passed
