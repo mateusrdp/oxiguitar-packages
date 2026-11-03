@@ -30,6 +30,8 @@ jobs:
       title: Trial plugins
       description: Two plugins for trying OxiGuitar's plugin release workflow. Never shipped.
       working-directory: plugins/trial
+      # A workspace of two crates: the first's version is the release's.
+      package: oxiguitar-trial-first-plugin
       # Their one test (the manifest is valid) runs on every system.
       test: true
       # The scripts under test are this commit's own.
