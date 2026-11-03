@@ -33,6 +33,10 @@ sudo dnf install oxiguitar
 
 Plugins are the packages `oxiguitar-guitarpro`, `oxiguitar-midi`, `oxiguitar-nam`, and so on. The Windows-only (WASAPI) and macOS-only (CoreAudio) audio plugins are not in these repositories.
 
+## Releasing
+
+One button on GitHub, then publish the draft: see [RELEASING.md](RELEASING.md).
+
 ## How it works
 
 Nothing is stored here but the scripts. Each time the site is built
