@@ -184,6 +184,8 @@ jobs:
           GPG_KEY_ID="$key" scripts/build-site.sh "$RUNNER_TEMP/packages" "$RUNNER_TEMP/site"
       - name: Install from it with apt and dnf
         run: scripts/test-install.sh "$RUNNER_TEMP/site" oxiguitar-test /usr/lib/oxiguitar/plugins/test.oxp
+      - name: Install an architecture-independent package from it
+        run: scripts/test-install.sh "$RUNNER_TEMP/site" oxiguitar-testall /usr/share/oxiguitar-testall/hello
 
   winget:
     name: Winget manifests
