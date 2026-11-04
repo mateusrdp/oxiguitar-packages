@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Copyright (C) 2026 Mateus Rocha de Paula and the OxiGuitar contributors
 #
-# Builds the .pkg of one plugin for users without Homebrew: pkgbuild and
+# Builds the .pkg of one plugin for macOS users: pkgbuild and
 # productbuild, with enable_currentUserHome so that it installs into the
 # user's own ~/Library/Application Support/OxiGuitar/plugins without a
 # password (#165). Runs on macOS. The package is not signed or notarised

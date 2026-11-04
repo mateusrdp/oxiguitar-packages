@@ -189,5 +189,5 @@ jobs:
             echo
             echo "- Runs: https://github.com/$OWNER/$REPO/actions/workflows/release.yml"
             echo "- When it is green, publish the draft: https://github.com/$OWNER/$REPO/releases"
-            echo "- Publishing starts the Site workflow here (apt and dnf) and the Homebrew pull requests."
+            echo "- Publishing starts the Site workflow here (apt and dnf)."
           } >> "$GITHUB_STEP_SUMMARY"
