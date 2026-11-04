@@ -19,7 +19,7 @@ sudo install -d -m 0755 /etc/apt/keyrings
 sudo curl -fsSL https://mateusrdp.github.io/oxiguitar-packages/oxiguitar.gpg -o /etc/apt/keyrings/oxiguitar.gpg
 sudo curl -fsSL https://mateusrdp.github.io/oxiguitar-packages/oxiguitar.sources -o /etc/apt/sources.list.d/oxiguitar.sources
 sudo apt update
-sudo apt install oxiguitar
+sudo apt install -o APT::Install-Suggests="true" oxiguitar
 ```
 
 Fedora and relatives:
@@ -29,7 +29,47 @@ sudo curl -fsSL https://mateusrdp.github.io/oxiguitar-packages/oxiguitar.repo -o
 sudo dnf install oxiguitar
 ```
 
+`oxiguitar` recommends the Guitar Pro, MIDI, ALSA and PipeWire plugins (apt installs recommended packages by default) and suggests `oxiguitar-nam` (amp models) and `oxiguitar-eq` (an equalizer); the option above installs the suggestions too. The MIDI plugin suggests `oxiguitar-bettersounds-soundfonts`, the recommended sound sets: installing it asks whether to download them now (about 1.2 GB; no is the default), and the command `oxiguitar-install-sounds` chooses and downloads them any time. It is the same package on every architecture.
+
 Plugins are the packages `oxiguitar-guitarpro`, `oxiguitar-midi`, `oxiguitar-nam`, and so on. The Windows-only (WASAPI) and macOS-only (CoreAudio) audio plugins are not in these repositories.
+
+## Releasing
+
+One button on GitHub, then publish the draft: see [RELEASING.md](RELEASING.md).
+
+## Plugin packaging
+
+The plugins' own release workflows call two reusable workflows from here, so
+a change to the packaging never waits for an OxiGuitar release:
+
+- [`plugin-release.yml`](.github/workflows/plugin-release.yml) builds a
+  plugin's `.oxp` files for Linux (x86_64, ARM64), Windows (x86_64, ARM64)
+  and macOS, and makes a zip per target, a `.deb` and `.rpm`
+  (`oxiguitar-NAME`), a per-user Windows installer, a macOS `.pkg` and
+  `SHA256SUMS`, installs and removes each package on Debian, Fedora, Windows
+  and macOS, and on a `v*` tag makes a draft release.
+- [`plugin-publish.yml`](.github/workflows/plugin-publish.yml) runs when that
+  draft is published: it checks the release holds every file and tells this
+  repository (apt, dnf) and the Homebrew tap.
+
+A plugin repository calls them `@main`:
+
+```yaml
+jobs:
+  release:
+    uses: mateusrdp/oxiguitar-packages/.github/workflows/plugin-release.yml@main
+    with:
+      name: midi
+      title: "MIDI (SoundFont, SFZ)"
+      description: "Plays scores with SoundFont, DLS and SFZ sound sets."
+    permissions:
+      contents: write
+```
+
+The scripts they run are in [`scripts/plugin-package/`](scripts/plugin-package).
+Every pull request that touches them tries the whole release on the two
+do-nothing plugins in [`plugins/trial/`](plugins/trial)
+(`plugin-release-try.yml`), whose files stay under the run as test builds.
 
 ## How it works
 

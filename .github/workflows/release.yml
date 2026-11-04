@@ -1,0 +1,193 @@
+# Release one of the repositories listed in repositories.txt (the apt and dnf
+# ones) or other-repositories.txt, from this page:
+# Actions > Release > Run workflow. It prepares the release, merges develop
+# into main, tags the merge commit and pushes the tag, which starts that
+# repository's own Release workflow (builds, tests, and a draft release).
+# Publishing that draft is the second and last click; publishing starts the
+# Site workflow here by itself (plugin-published).
+#
+# It acts through the GitHub App "OxiGuitar Release" (RELEASE_APP_ID and
+# RELEASE_APP_KEY, set up once: see RELEASING.md), which may push to develop
+# and main and create tags where a person would otherwise have to.
+#
+# The versions are changed by this repository's scripts/release/bump.sh,
+# which finds them by itself in a plugin repository (Cargo.toml, the
+# manifests, Cargo.lock) or a VERSION file, and moves the CHANGELOG's
+# [Unreleased] section under the new version. A repository with files of
+# its own that name the version (OxiGuitar itself: the metainfo, the Debian
+# changelog) has its own scripts/release/bump.sh VERSION DATE, used instead.
+# Nothing has to be added to a new plugin repository for it to be released.
+name: Release
+run-name: Release ${{ inputs.repository }} ${{ inputs.version }}${{ inputs.dry_run && ' (dry run)' || '' }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      repository:
+        description: "Which repository, by name: oxiguitar, oxiguitar-guitarpro, ... (as in repositories.txt or other-repositories.txt)"
+        required: true
+        default: oxiguitar
+      version:
+        description: "patch, minor, major, or a version such as 0.13.0 (counted from the latest v* tag)"
+        required: true
+      dry_run:
+        description: "Only prepare the release and show what would change; push nothing"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ inputs.repository }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    env:
+      OWNER: ${{ github.repository_owner }}
+      REPO: ${{ inputs.repository }}
+      WANTED: ${{ inputs.version }}
+      DRY_RUN: ${{ inputs.dry_run }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Check the repository and the version asked for
+        run: |
+          [[ "$REPO" =~ ^[A-Za-z0-9._-]+$ ]] || { echo "::error::'$REPO' is not a repository name"; exit 1; }
+          cat repositories.txt other-repositories.txt | grep -v '^#' | grep -qxF "$OWNER/$REPO" \
+            || { echo "::error::$OWNER/$REPO is in neither repositories.txt nor other-repositories.txt"; exit 1; }
+          [[ "$WANTED" =~ ^(patch|minor|major|[0-9]+\.[0-9]+\.[0-9]+)$ ]] \
+            || { echo "::error::version must be patch, minor, major or like 0.13.0"; exit 1; }
+
+      - name: Token for the repository, from the GitHub App
+        id: app
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: ${{ inputs.repository }}
+
+      - name: Check out develop
+        uses: actions/checkout@v5
+        with:
+          repository: ${{ github.repository_owner }}/${{ inputs.repository }}
+          ref: develop
+          token: ${{ steps.app.outputs.token }}
+          fetch-depth: 0
+          path: target
+
+      - name: Develop must be green
+        working-directory: target
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+        run: |
+          set -euo pipefail
+          wait_for_ci() {  # SHA MINUTES: wait for ci-success on SHA; fail unless it passes
+            local sha="$1" deadline=$((SECONDS + $2 * 60)) result
+            while :; do
+              result="$(gh api "repos/$OWNER/$REPO/commits/$sha/check-runs?per_page=100" \
+                --jq '[.check_runs[] | select(.name == "ci-success")] | first | .conclusion // "pending"')"
+              case "$result" in
+                success) return 0 ;;
+                pending|null) ;;
+                *) echo "::error::ci-success on ${sha:0:7} is $result"; return 1 ;;
+              esac
+              (( SECONDS < deadline )) || { echo "::error::ci-success on ${sha:0:7} did not finish in time"; return 1; }
+              sleep 60
+            done
+          }
+          declare -f wait_for_ci > "$RUNNER_TEMP/wait_for_ci.sh"
+          if [[ "$DRY_RUN" == true ]]; then
+            wait_for_ci "$(git rev-parse HEAD)" 0 || echo "::warning::develop is not green; a real release would stop here"
+          else
+            wait_for_ci "$(git rev-parse HEAD)" 90
+            echo "develop at $(git rev-parse --short HEAD) is green"
+          fi
+
+      - name: Work out the version
+        id: version
+        working-directory: target
+        run: |
+          set -euo pipefail
+          latest="$(git tag --list 'v[0-9]*' --sort=-v:refname | head -n 1)"
+          latest="${latest#v}"
+          if [[ -z "$latest" && ! "$WANTED" =~ ^[0-9] ]]; then
+            echo "::error::no v* tag yet; give the version in full, such as 0.1.0"; exit 1
+          fi
+          IFS=. read -r major minor patch <<< "${latest:-0.0.0}"
+          case "$WANTED" in
+            patch) version="$major.$minor.$((patch + 1))" ;;
+            minor) version="$major.$((minor + 1)).0" ;;
+            major) version="$((major + 1)).0.0" ;;
+            *) version="$WANTED" ;;
+          esac
+          if git ls-remote --exit-code --tags origin "refs/tags/v$version" > /dev/null 2>&1; then
+            echo "::error::v$version exists already"; exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          # The first release may keep the version the repository was made with.
+          echo "first=$([[ -z "$latest" ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+          echo "Releasing $version (latest tag: ${latest:-none})"
+
+      - name: Prepare the release
+        working-directory: target
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          FIRST_RELEASE: ${{ steps.version.outputs.first }}
+        run: |
+          set -euo pipefail
+          if [[ -x scripts/release/bump.sh ]]; then
+            scripts/release/bump.sh "$VERSION" "$(date -u +%F)"
+          else
+            "$GITHUB_WORKSPACE/scripts/release/bump.sh" . "$VERSION" "$(date -u +%F)"
+          fi
+          {
+            echo "### Release ${{ steps.version.outputs.version }} of $REPO"
+            echo '```diff'
+            git diff --stat
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          git diff -- CHANGELOG.md | head -n 60
+
+      - name: Commit, merge into main, tag
+        if: ${{ !inputs.dry_run }}
+        working-directory: target
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+          SLUG: ${{ steps.app.outputs.app-slug }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -euo pipefail
+          source "$RUNNER_TEMP/wait_for_ci.sh"
+          id="$(gh api "users/$SLUG[bot]" --jq .id)"
+          git config user.name "$SLUG[bot]"
+          git config user.email "$id+$SLUG[bot]@users.noreply.github.com"
+
+          # The release commit on develop, once CI agrees with it.
+          git add -A
+          git commit -s -q -m "Release $VERSION"
+          git push origin HEAD:develop
+          wait_for_ci "$(git rev-parse HEAD)" 120
+
+          # develop into main with a merge commit, and the tag on that commit.
+          git fetch -q origin main
+          git checkout -q -B main origin/main
+          git merge --no-ff --signoff -q -m "Release v$VERSION: merge develop into main" origin/develop
+          git tag -a "v$VERSION" -m "$REPO $VERSION"
+          git push origin main "v$VERSION"
+
+          # develop catches up with main (a fast-forward), so neither is "behind".
+          git push origin main:develop || echo "::warning::develop moved meanwhile; not fast-forwarded to main"
+
+          {
+            echo "Tagged **v$VERSION** on main. Its Release workflow is building the draft:"
+            echo
+            echo "- Runs: https://github.com/$OWNER/$REPO/actions/workflows/release.yml"
+            echo "- When it is green, publish the draft: https://github.com/$OWNER/$REPO/releases"
+            echo "- Publishing starts the Site workflow here (apt and dnf) and the Homebrew pull requests."
+          } >> "$GITHUB_STEP_SUMMARY"

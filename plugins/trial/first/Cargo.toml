@@ -1,0 +1,17 @@
+[package]
+name = "oxiguitar-trial-first-plugin"
+description = "A plugin that does nothing, for trying the plugin release workflow. Never shipped."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[lib]
+crate-type = ["lib"]
+
+[features]
+oxp = []
+
+[dependencies]
+oxiguitar-plugin.workspace = true

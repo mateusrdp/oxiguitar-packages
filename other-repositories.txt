@@ -1,0 +1,5 @@
+# Repositories released with the Release workflow (Actions > Release) that
+# are not in the apt and dnf repositories: they have no .deb or .rpm, so
+# repositories.txt does not list them. One a line, owner/name.
+mateusrdp/oxiguitar-wasapi
+mateusrdp/oxiguitar-coreaudio
