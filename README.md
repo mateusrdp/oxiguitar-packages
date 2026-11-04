@@ -50,7 +50,7 @@ a change to the packaging never waits for an OxiGuitar release:
   and macOS, and on a `v*` tag makes a draft release.
 - [`plugin-publish.yml`](.github/workflows/plugin-publish.yml) runs when that
   draft is published: it checks the release holds every file and tells this
-  repository (apt, dnf) and the Homebrew tap.
+  repository (apt, dnf).
 
 A plugin repository calls them `@main`:
 

@@ -18,8 +18,7 @@ Everything is done on github.com. A release is two clicks.
    workflow, which builds, tests and makes a **draft** release.
 2. **Publish the draft** (the repository's Releases page) when its Release
    workflow is green. Publishing starts the Site workflow here, which
-   rebuilds the signed apt and dnf repositories, and the Homebrew pull
-   requests.
+   rebuilds the signed apt and dnf repositories.
 
 A plugin is released on its own: neither OxiGuitar nor any other plugin
 needs a release with it. Its packages are made by this repository's
