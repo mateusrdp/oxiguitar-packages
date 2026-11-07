@@ -16,12 +16,12 @@
 # release holds every file and sum, then tells the package repositories.
 #
 # - mateusrdp/oxiguitar-packages (the apt and dnf repositories, and the
-#   Flatpak extensions) and mateusrdp/homebrew-oxiguitar (the tap) get a
-#   repository_dispatch event `plugin-published` with the plugin, the tag
-#   and the repository, and fetch the files from the release themselves.
-#   It needs the secret PACKAGES_TOKEN, a token of Mateus's that can
-#   dispatch to those two repositories (contents: write). Without it
-#   nothing is sent and the run says so.
+#   Flatpak extensions) gets a repository_dispatch event `plugin-published`
+#   with the plugin, the tag and the repository, and fetches the files from
+#   the release itself. It needs the secret PACKAGES_TOKEN, a token of
+#   Mateus's that can dispatch to it (contents: write). Without it nothing
+#   is sent and the run says so. (A Homebrew tap used to be told too; it was
+#   dropped on 4 Nov 2026, as Homebrew no longer supports Intel Macs.)
 # - winget (when winget-id is given): wingetcreate opens a pull request on
 #   microsoft/winget-pkgs with the two installers' addresses and sums. It needs the secret WINGET_TOKEN
 #   (public_repo) and a fork of winget-pkgs; the first submission of each
@@ -53,9 +53,6 @@ on:
       packages-repository:
         type: string
         default: mateusrdp/oxiguitar-packages
-      tap-repository:
-        type: string
-        default: mateusrdp/homebrew-oxiguitar
       winget-id:
         description: "The winget package id, such as mateusrdp.OxiGuitar.MIDI; empty skips winget"
         type: string
@@ -101,7 +98,7 @@ jobs:
           fi
           payload="$(jq -nc --arg plugin '${{ inputs.name }}' --arg tag "$TAG" --arg repo "$GITHUB_REPOSITORY" \
             '{event_type: "plugin-published", client_payload: {plugin: $plugin, tag: $tag, repository: $repo}}')"
-          for target in '${{ inputs.packages-repository }}' '${{ inputs.tap-repository }}'; do
+          for target in '${{ inputs.packages-repository }}'; do
             GH_TOKEN="$PACKAGES_TOKEN" gh api "repos/$target/dispatches" --method POST --input - <<< "$payload"
             echo "Told $target."
           done
