@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "generatedAt": "2026-11-08T00:00:00.000Z",
+  "projectRoot": "/home/mat/Documents/src/oxiguitar-packages",
+  "gitCommitHash": "6479fe72b25847de7ec5fecf0b8a578ce08aedef",
+  "totalNodes": 43,
+  "totalEdges": 37,
+  "totalLayers": 6,
+  "tourSteps": 7,
+  "layers": [
+    "CI/CD Layer",
+    "Scripts Layer",
+    "Plugin Layer",
+    "Configuration Layer",
+    "Documentation Layer",
+    "Site Layer"
+  ],
+  "nodeTypes": {
+    "pipeline": 6,
+    "document": 8,
+    "config": 9,
+    "file": 20
+  },
+  "edgeTypes": {
+    "related": 35,
+    "triggers": 2
+  },
+  "validation": {
+    "approved": true,
+    "issues": 0,
+    "warnings": 13
+  }
+}

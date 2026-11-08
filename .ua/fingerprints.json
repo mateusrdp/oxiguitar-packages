@@ -1,0 +1,599 @@
+{
+  "version": "1.0.0",
+  "gitCommitHash": "6479fe72b25847de7ec5fecf0b8a578ce08aedef",
+  "generatedAt": "2026-11-07T18:04:43.611Z",
+  "files": {
+    ".github/dependabot.yml": {
+      "filePath": ".github/dependabot.yml",
+      "contentHash": "07afc929af00c948d11b4165dab88dde585c255d436ca831723008c90c28c911",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 17,
+      "hasStructuralAnalysis": false
+    },
+    ".github/pull_request_template.md": {
+      "filePath": ".github/pull_request_template.md",
+      "contentHash": "2725627b502bd9a41e49fa5324897c4c507ae2dc69a726057c974456140b6213",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 16,
+      "hasStructuralAnalysis": false
+    },
+    ".github/workflows/ci.yml": {
+      "filePath": ".github/workflows/ci.yml",
+      "contentHash": "4283c7d46d0acc54b179ef200567b85e2b63bae18d36be183c2965eed17289da",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 224,
+      "hasStructuralAnalysis": false
+    },
+    ".github/workflows/plugin-publish.yml": {
+      "filePath": ".github/workflows/plugin-publish.yml",
+      "contentHash": "1d7169c5debd6154b1c280c27c3899d194f2effb1843aae30e5c97229f61dbcb",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 132,
+      "hasStructuralAnalysis": false
+    },
+    ".github/workflows/plugin-release-try.yml": {
+      "filePath": ".github/workflows/plugin-release-try.yml",
+      "contentHash": "9d6d186b7332ce206e8f21186f58dae7b95fe2864d4b6d5cfb629cbe5757792e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 77,
+      "hasStructuralAnalysis": false
+    },
+    ".github/workflows/plugin-release.yml": {
+      "filePath": ".github/workflows/plugin-release.yml",
+      "contentHash": "53fa5b006f5b9de0a689f43c8968c61e42e49b9cd29026e6fac5277135b95851",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 468,
+      "hasStructuralAnalysis": false
+    },
+    ".github/workflows/release.yml": {
+      "filePath": ".github/workflows/release.yml",
+      "contentHash": "42c20200e1cd4a267fb9d23c147b1af2d105414aa91de44771feffd2c946eed9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 194,
+      "hasStructuralAnalysis": false
+    },
+    ".github/workflows/site.yml": {
+      "filePath": ".github/workflows/site.yml",
+      "contentHash": "badca1daa9e90636506fbc9fd14ac76020231f2862e9588b96fd9219f18943d8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 112,
+      "hasStructuralAnalysis": false
+    },
+    "CLAUDE.md": {
+      "filePath": "CLAUDE.md",
+      "contentHash": "633b814abe31e1fa3b9fed2c5e2f1cb286f53bf10545d87db69e4768eeaf3feb",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 34,
+      "hasStructuralAnalysis": false
+    },
+    "CONTRIBUTING.md": {
+      "filePath": "CONTRIBUTING.md",
+      "contentHash": "3bcb5060a30bfad18dd1d40a8a1e12df472ee121aa807daff6207bb75f901d3d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 43,
+      "hasStructuralAnalysis": false
+    },
+    "README.md": {
+      "filePath": "README.md",
+      "contentHash": "12d457128a9e18b10117813a7c44d260af524511c83e39d2eee846cdb539afc0",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 123,
+      "hasStructuralAnalysis": false
+    },
+    "RELEASING.md": {
+      "filePath": "RELEASING.md",
+      "contentHash": "184d1ea97fae75c620de7cac6fbfb048efe2b46de6e187d98d3eac49eb0562ac",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 105,
+      "hasStructuralAnalysis": false
+    },
+    "clippy.toml": {
+      "filePath": "clippy.toml",
+      "contentHash": "f47870687bec93d43189402220733f9f496cb22ec33914d2c35c4dc65c3ffa11",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 6,
+      "hasStructuralAnalysis": false
+    },
+    "deny.toml": {
+      "filePath": "deny.toml",
+      "contentHash": "e3533f4749ad3b5cc1868bf4a1ac96a33af22c34c142249de95883fda9e27bd7",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 65,
+      "hasStructuralAnalysis": false
+    },
+    "docs/winget.md": {
+      "filePath": "docs/winget.md",
+      "contentHash": "221ae4db94b934e2c5edce5beb7c47007b4f1f2fc90c3c58e1b5f572c9e8680b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 46,
+      "hasStructuralAnalysis": false
+    },
+    "other-repositories.txt": {
+      "filePath": "other-repositories.txt",
+      "contentHash": "3f2ec8a5caf0c2ca996c46e48e9062a904e57f305a769076b91f319809eb8f89",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 6,
+      "hasStructuralAnalysis": false
+    },
+    "plugins/trial/Cargo.toml": {
+      "filePath": "plugins/trial/Cargo.toml",
+      "contentHash": "69d97a4fe8557d58dd096825b581657e59ed3d3c94b2826da185d192c376baa0",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 21,
+      "hasStructuralAnalysis": false
+    },
+    "plugins/trial/build-oxp.sh": {
+      "filePath": "plugins/trial/build-oxp.sh",
+      "contentHash": "3602c5867f0b7c9c8273fc274cd79a26144422fe3c591a403df5d7a99e23ec32",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 49,
+      "hasStructuralAnalysis": false
+    },
+    "plugins/trial/first/Cargo.toml": {
+      "filePath": "plugins/trial/first/Cargo.toml",
+      "contentHash": "6736d9bafc6fa319aeb48a6c1d14b461cbce08c62f6b03b2598814168d7a7178",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 18,
+      "hasStructuralAnalysis": false
+    },
+    "plugins/trial/first/manifest.json": {
+      "filePath": "plugins/trial/first/manifest.json",
+      "contentHash": "1511992a8600493f88ac5d73791d0eaed1290b3b26879138f9c78c5e53920317",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 14,
+      "hasStructuralAnalysis": false
+    },
+    "plugins/trial/first/src/lib.rs": {
+      "filePath": "plugins/trial/first/src/lib.rs",
+      "contentHash": "fae0a477fea24c70613f6120a6da21571b644a176e5e282d6b3fe7a56635e927",
+      "functions": [
+        {
+          "name": "start",
+          "owner": null,
+          "params": [
+            "_host"
+          ],
+          "returnType": "Result<Trial, Error>",
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "effect",
+          "owner": null,
+          "params": [
+            "id"
+          ],
+          "returnType": "Option<&dyn Effect>",
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "prepare",
+          "owner": null,
+          "params": [
+            "_prepare"
+          ],
+          "returnType": "Result<Box<dyn Processor>, Error>",
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "process",
+          "owner": null,
+          "params": [
+            "_left",
+            "_right"
+          ],
+          "exported": false,
+          "lineCount": 1
+        }
+      ],
+      "classes": [
+        {
+          "name": "Trial",
+          "methods": [
+            "start",
+            "effect",
+            "prepare"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "Pass",
+          "methods": [
+            "process"
+          ],
+          "properties": [],
+          "exported": false,
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "oxiguitar_plugin::audio",
+          "specifiers": [
+            "PrepareEffect"
+          ]
+        },
+        {
+          "source": "oxiguitar_plugin",
+          "specifiers": [
+            "Effect",
+            "Error",
+            "Host",
+            "Plugin",
+            "Processor"
+          ]
+        }
+      ],
+      "exports": [
+        "Trial"
+      ],
+      "totalLines": 50,
+      "hasStructuralAnalysis": true
+    },
+    "plugins/trial/second/Cargo.toml": {
+      "filePath": "plugins/trial/second/Cargo.toml",
+      "contentHash": "d85f8ca3a06beb0f9e204bbb22663950c60fe280e203dae02a6b6f6bb0b6adae",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 18,
+      "hasStructuralAnalysis": false
+    },
+    "plugins/trial/second/manifest.json": {
+      "filePath": "plugins/trial/second/manifest.json",
+      "contentHash": "ccf2f5edeb74b46082e668128a024b7018d5de2a0c66efb79551ab4e63fcdea4",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 14,
+      "hasStructuralAnalysis": false
+    },
+    "plugins/trial/second/src/lib.rs": {
+      "filePath": "plugins/trial/second/src/lib.rs",
+      "contentHash": "fae0a477fea24c70613f6120a6da21571b644a176e5e282d6b3fe7a56635e927",
+      "functions": [
+        {
+          "name": "start",
+          "owner": null,
+          "params": [
+            "_host"
+          ],
+          "returnType": "Result<Trial, Error>",
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "effect",
+          "owner": null,
+          "params": [
+            "id"
+          ],
+          "returnType": "Option<&dyn Effect>",
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "prepare",
+          "owner": null,
+          "params": [
+            "_prepare"
+          ],
+          "returnType": "Result<Box<dyn Processor>, Error>",
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "process",
+          "owner": null,
+          "params": [
+            "_left",
+            "_right"
+          ],
+          "exported": false,
+          "lineCount": 1
+        }
+      ],
+      "classes": [
+        {
+          "name": "Trial",
+          "methods": [
+            "start",
+            "effect",
+            "prepare"
+          ],
+          "properties": [],
+          "exported": true,
+          "lineCount": 1
+        },
+        {
+          "name": "Pass",
+          "methods": [
+            "process"
+          ],
+          "properties": [],
+          "exported": false,
+          "lineCount": 1
+        }
+      ],
+      "imports": [
+        {
+          "source": "oxiguitar_plugin::audio",
+          "specifiers": [
+            "PrepareEffect"
+          ]
+        },
+        {
+          "source": "oxiguitar_plugin",
+          "specifiers": [
+            "Effect",
+            "Error",
+            "Host",
+            "Plugin",
+            "Processor"
+          ]
+        }
+      ],
+      "exports": [
+        "Trial"
+      ],
+      "totalLines": 50,
+      "hasStructuralAnalysis": true
+    },
+    "repositories.txt": {
+      "filePath": "repositories.txt",
+      "contentHash": "143b242d6febc249a0a41f60e2fb0a5a6ef61bbe24089776213b3f3440eeb866",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 14,
+      "hasStructuralAnalysis": false
+    },
+    "rustfmt.toml": {
+      "filePath": "rustfmt.toml",
+      "contentHash": "d461d42d0e324e3bd489a46e068794c0358a9f542c90495ed15ee2e581cb66ad",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 4,
+      "hasStructuralAnalysis": false
+    },
+    "scripts/build-site.sh": {
+      "filePath": "scripts/build-site.sh",
+      "contentHash": "1613d1365b9cbee05ee756934c5c217ee216a00d27b9180ed57ccf83a94c7b66",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 125,
+      "hasStructuralAnalysis": false
+    },
+    "scripts/check-dco.sh": {
+      "filePath": "scripts/check-dco.sh",
+      "contentHash": "09c2fc940f2e61ebbfe8f266bcbcb8c1aafd454ea078a1288566a0465a27570d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 71,
+      "hasStructuralAnalysis": false
+    },
+    "scripts/fetch-packages.sh": {
+      "filePath": "scripts/fetch-packages.sh",
+      "contentHash": "135b58abc62a54c4e588b62b7fc2a45528667210b3e5ece9665356b35fc58ff7",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 54,
+      "hasStructuralAnalysis": false
+    },
+    "scripts/make-test-packages.sh": {
+      "filePath": "scripts/make-test-packages.sh",
+      "contentHash": "0f59ac04eadbb00a5db2c8b99aa96fd0200ee8b00953a3d61630a0875385c805",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 52,
+      "hasStructuralAnalysis": false
+    },
+    "scripts/make-winget-manifests.sh": {
+      "filePath": "scripts/make-winget-manifests.sh",
+      "contentHash": "e83cb64756305e3ee9962c41b20ddf851ca32e77a19c6bdd84579f2a5326b306",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 114,
+      "hasStructuralAnalysis": false
+    },
+    "scripts/plugin-package/check-assets.sh": {
+      "filePath": "scripts/plugin-package/check-assets.sh",
+      "contentHash": "a4da60803f7ba166b85de4b393dab368ad0e2877f8bafb27afeb4d58c8ae3065",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 68,
+      "hasStructuralAnalysis": false
+    },
+    "scripts/plugin-package/check-glibc.sh": {
+      "filePath": "scripts/plugin-package/check-glibc.sh",
+      "contentHash": "c138c4272ce9e8d8a0b83dd12cf5fe2424fc6db45f87268f295b9d5cda5e0cfa",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 37,
+      "hasStructuralAnalysis": false
+    },
+    "scripts/plugin-package/deb.sh": {
+      "filePath": "scripts/plugin-package/deb.sh",
+      "contentHash": "80ae71b0974395e4c52953b9d8cb0f45d678ffb704e1ca593bda1cb4538ba63d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 103,
+      "hasStructuralAnalysis": false
+    },
+    "scripts/plugin-package/macos-pkg.sh": {
+      "filePath": "scripts/plugin-package/macos-pkg.sh",
+      "contentHash": "0d37a95bfd806b9793c6f17bfedc9028b5d7618a92513fc6576f0b76311bcf78",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 71,
+      "hasStructuralAnalysis": false
+    },
+    "scripts/plugin-package/rpm.sh": {
+      "filePath": "scripts/plugin-package/rpm.sh",
+      "contentHash": "47445b7dbc05887a3b7e1c98723b52bb08d17dc1a939f2db6de5b37de3346e73",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 94,
+      "hasStructuralAnalysis": false
+    },
+    "scripts/plugin-package/specs.sh": {
+      "filePath": "scripts/plugin-package/specs.sh",
+      "contentHash": "3cc8cf3ba7fb1ad9d7aa69c8d201f27e81d64db9ca7ffd61edc100080a4b5034",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 36,
+      "hasStructuralAnalysis": false
+    },
+    "scripts/plugin-package/windows.iss": {
+      "filePath": "scripts/plugin-package/windows.iss",
+      "contentHash": "36c372c2255e1882e531a55da90f83a5bbb57e3c41e0a6e2bb85bc4bea2eff10",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 72,
+      "hasStructuralAnalysis": false
+    },
+    "scripts/plugin-package/windows.sh": {
+      "filePath": "scripts/plugin-package/windows.sh",
+      "contentHash": "36cfbde895284bff05a3defe2261ffb9a341f6976ec392b2fc8a80f74ce14c16",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 84,
+      "hasStructuralAnalysis": false
+    },
+    "scripts/release/bump.sh": {
+      "filePath": "scripts/release/bump.sh",
+      "contentHash": "c0fc64240b03e60a673f14db6f0a3a5263a61e2e255ded42724ebb0c4ce2165b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 98,
+      "hasStructuralAnalysis": false
+    },
+    "scripts/release/test-bump.sh": {
+      "filePath": "scripts/release/test-bump.sh",
+      "contentHash": "2696517fbfb6299b519e3962371f5f4e414affb1a81f6541447bab994520ddc9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 122,
+      "hasStructuralAnalysis": false
+    },
+    "scripts/test-install.sh": {
+      "filePath": "scripts/test-install.sh",
+      "contentHash": "b0f4384a317c1dd2c354202525622b6b12df1afd4176e4b687870049f3a2104a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 50,
+      "hasStructuralAnalysis": false
+    },
+    "site-src/index.html": {
+      "filePath": "site-src/index.html",
+      "contentHash": "9c41e9d94a567fd76dcaa0d2a2832eb833e300acc0c0f9ab408f69a8dfd81615",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 39,
+      "hasStructuralAnalysis": false
+    }
+  }
+}
