@@ -132,7 +132,7 @@ jobs:
       version: ${{ steps.version.outputs.version }}
       matrix: ${{ steps.matrix.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@stable
       - id: matrix
         env:
@@ -187,8 +187,8 @@ jobs:
         shell: bash
         working-directory: ${{ inputs.working-directory }}
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
+      - uses: actions/checkout@v7
         with:
           repository: mateusrdp/oxiguitar-packages
           ref: ${{ inputs.tools-ref }}
@@ -242,7 +242,7 @@ jobs:
       PLUGIN_SUGGESTS_DEB: ${{ inputs.suggests-deb }}
       PLUGIN_SUGGESTS_RPM: ${{ inputs.suggests-rpm }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           repository: mateusrdp/oxiguitar-packages
           ref: ${{ inputs.tools-ref }}
@@ -309,7 +309,7 @@ jobs:
       PLUGIN_TITLE: ${{ inputs.title }}
       PLUGIN_HOMEPAGE: https://github.com/${{ github.repository }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           repository: mateusrdp/oxiguitar-packages
           ref: ${{ inputs.tools-ref }}
@@ -353,7 +353,7 @@ jobs:
       VERSION: ${{ needs.meta.outputs.version }}
       PLUGIN_TITLE: ${{ inputs.title }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           repository: mateusrdp/oxiguitar-packages
           ref: ${{ inputs.tools-ref }}
@@ -390,7 +390,7 @@ jobs:
     if: ${{ !failure() && !cancelled() }}
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           repository: mateusrdp/oxiguitar-packages
           ref: ${{ inputs.tools-ref }}
