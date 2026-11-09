@@ -17,6 +17,9 @@
 #
 #   - a zip per target,
 #   - a .deb and an .rpm per Linux processor (oxiguitar-NAME),
+#   - a Flatpak per Linux processor, io.github.mateusrdp.OxiGuitar.Plugin.NAME,
+#     an extension of the OxiGuitar Flatpak (oxiguitar-NAME-VERSION-ARCH.flatpak;
+#     scripts/plugin-package/flatpak.sh, #163),
 #   - a per-user installer per Windows processor (Inno Setup, no
 #     administrator),
 #   - a macOS .pkg (enable_currentUserHome: no password),
@@ -221,7 +224,7 @@ jobs:
           retention-days: 14
 
   linux-packages:
-    name: .deb and .rpm (${{ matrix.arch }})
+    name: .deb, .rpm and Flatpak (${{ matrix.arch }})
     needs: [meta, build]
     if: contains(inputs.systems, 'linux')
     runs-on: ${{ matrix.os }}
@@ -252,7 +255,7 @@ jobs:
         with:
           name: oxp-linux-${{ matrix.arch }}
           path: oxp
-      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends rpm
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends rpm flatpak ostree appstream
       - name: Build the packages
         run: |
           name='${{ inputs.name }}'
@@ -263,6 +266,7 @@ jobs:
           echo "DESTS=${dests# }" >> "$GITHUB_ENV"
           tools/scripts/plugin-package/deb.sh "$name" "$VERSION" ${{ matrix.arch }} packages "${files[@]}"
           tools/scripts/plugin-package/rpm.sh "$name" "$VERSION" ${{ matrix.arch }} packages "${files[@]}"
+          tools/scripts/plugin-package/flatpak.sh "$name" "$VERSION" ${{ matrix.arch }} packages "${files[@]}"
       # The .deb installs in Debian (the core isn't needed to install it)
       # and puts the files where OxiGuitar looks; the .rpm in Fedora.
       - name: Test the .deb in Debian sid
@@ -283,6 +287,21 @@ jobs:
             rpm -e --nodeps oxiguitar-${{ inputs.name }}
             for f in $DESTS; do ! test -e /usr/lib/oxiguitar/plugins/$f; done
           '
+      # The Flatpak extension holds the files under the same names, for the
+      # app's extension point (oxiguitar-packages' Site installs it with the
+      # app from the repository it builds; plugin-release-try.yml too).
+      - name: Check the Flatpak
+        run: |
+          id='io.github.mateusrdp.OxiGuitar.Plugin.${{ inputs.name }}'
+          ref="runtime/$id/${{ matrix.arch }}/stable"
+          ostree --repo="$RUNNER_TEMP/flatpak" init --mode=archive-z2
+          flatpak build-import-bundle "$RUNNER_TEMP/flatpak" packages/*.flatpak 2>&1 | grep -v CRITICAL || true
+          ostree --repo="$RUNNER_TEMP/flatpak" refs | grep -qx "$ref"
+          ostree --repo="$RUNNER_TEMP/flatpak" cat "$ref" /metadata | tee "$RUNNER_TEMP/metadata"
+          grep -qx 'ref=app/io.github.mateusrdp.OxiGuitar/${{ matrix.arch }}/stable' "$RUNNER_TEMP/metadata"
+          ostree --repo="$RUNNER_TEMP/flatpak" ls -R "$ref" /files
+          for f in $DESTS; do ostree --repo="$RUNNER_TEMP/flatpak" ls "$ref" "/files/plugins/$f"; done
+          ostree --repo="$RUNNER_TEMP/flatpak" ls "$ref" "/files/share/app-info/xmls/$id.xml.gz"
       - uses: actions/upload-artifact@v7
         with:
           name: packages-linux-${{ matrix.arch }}

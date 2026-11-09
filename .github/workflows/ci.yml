@@ -164,7 +164,7 @@ jobs:
       - name: Tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y apt-utils createrepo-c rpm gnupg
+          sudo apt-get install -y apt-utils createrepo-c rpm gnupg flatpak ostree appstream
           pip install shellcheck-py
       - name: Shellcheck
         run: shellcheck scripts/*.sh scripts/*/*.sh plugins/trial/build-oxp.sh
@@ -176,6 +176,13 @@ jobs:
           key="$(gpg --with-colons --list-secret-keys | awk -F: '/^fpr:/ { print $10; exit }')"
           scripts/make-test-packages.sh scripts/plugin-package "$RUNNER_TEMP/packages"
           GPG_KEY_ID="$key" scripts/build-site.sh "$RUNNER_TEMP/packages" "$RUNNER_TEMP/site"
+          # The test plugin's extension is in the Flatpak repository, signed;
+          # no OxiGuitar bundle, so no .flatpakref (plugin-release-try.yml
+          # installs from a repository with the app).
+          ostree --repo="$RUNNER_TEMP/site/flatpak/repo" refs | grep -qx "runtime/io.github.mateusrdp.OxiGuitar.Plugin.test/$(uname -m)/stable"
+          test -s "$RUNNER_TEMP/site/flatpak/repo/summary.sig"
+          grep -q '^GPGKey=' "$RUNNER_TEMP/site/flatpak/oxiguitar.flatpakrepo"
+          test ! -e "$RUNNER_TEMP/site/flatpak/io.github.mateusrdp.OxiGuitar.flatpakref"
       - name: Install from it with apt and dnf
         run: scripts/test-install.sh "$RUNNER_TEMP/site" oxiguitar-test /usr/lib/oxiguitar/plugins/test.oxp
       - name: Install an architecture-independent package from it

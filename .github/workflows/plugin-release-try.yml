@@ -12,8 +12,15 @@ on:
       - .github/workflows/plugin-publish.yml
       - .github/workflows/plugin-release-try.yml
       - scripts/plugin-package/**
+      - scripts/flatpak-repo.sh
+      - scripts/test-flatpak.sh
       - plugins/trial/**
   workflow_dispatch:
+    inputs:
+      app-run:
+        description: "The mateusrdp/oxiguitar 'Release packages' run whose Flatpak bundle to install (default: the latest run that made one)"
+        type: string
+        default: ""
 
 permissions:
   contents: read
@@ -74,3 +81,90 @@ jobs:
           for f in ("plugin-release", "plugin-publish"):
               yaml.safe_load(open(f".github/workflows/{f}.yml"))
           '
+
+  # The Flatpak repository Site builds, from the trial plugins' bundles, a
+  # bundle of the released Guitar Pro plugins made here with the same script
+  # (scripts/plugin-package/flatpak.sh), and OxiGuitar's bundle from the
+  # latest run of its release workflow that made one; signed with a key made
+  # for the run. Then OxiGuitar and both plugins are installed from it as a
+  # user would, the runtime from Flathub, and the sample score is opened in
+  # the sandbox (scripts/test-flatpak.sh).
+  flatpak:
+    name: Flatpak repository and install
+    needs: release
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - name: Flatpak tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends flatpak ostree appstream dbus gnupg unzip
+          # Ubuntu 24.04 keeps unprivileged user namespaces from bubblewrap.
+          sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+      - uses: actions/download-artifact@v8
+        with:
+          name: release-files
+          path: release
+      - name: OxiGuitar's latest Flatpak build
+        id: app
+        env:
+          GH_TOKEN: ${{ github.token }}
+          APP_RUN: ${{ inputs.app-run }}
+        run: |
+          run="$APP_RUN"
+          if [[ -z "$run" ]]; then
+            for id in $(gh api "repos/mateusrdp/oxiguitar/actions/workflows/release.yml/runs?per_page=50" --jq '.workflow_runs[].id'); do
+              if gh api "repos/mateusrdp/oxiguitar/actions/runs/$id/artifacts" --jq '.artifacts[] | select(.expired | not) | .name' \
+                  | grep -q '^OxiGuitar-.*-x86_64\.flatpak$'; then
+                run="$id"
+                break
+              fi
+            done
+          fi
+          if [[ -z "$run" ]]; then
+            echo "::error::no run of mateusrdp/oxiguitar's release workflow has a Flatpak bundle"
+            exit 1
+          fi
+          echo "OxiGuitar's bundle from https://github.com/mateusrdp/oxiguitar/actions/runs/$run" | tee -a "$GITHUB_STEP_SUMMARY"
+          echo "run=$run" >> "$GITHUB_OUTPUT"
+      - uses: actions/download-artifact@v8
+        with:
+          repository: mateusrdp/oxiguitar
+          run-id: ${{ steps.app.outputs.run }}
+          github-token: ${{ github.token }}
+          pattern: "OxiGuitar-*-x86_64.flatpak"
+          path: bundles
+          merge-multiple: true
+          skip-decompress: true
+      - name: The released Guitar Pro plugins as a Flatpak
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PLUGIN_TITLE: Guitar Pro
+          PLUGIN_DESCRIPTION: Opens and saves Guitar Pro files.
+          PLUGIN_HOMEPAGE: https://github.com/mateusrdp/oxiguitar-guitarpro
+        run: |
+          repo=mateusrdp/oxiguitar-guitarpro
+          tag="$(gh api "repos/$repo/releases" --jq '[.[] | select(.draft | not)] | first | .tag_name')"
+          zip="oxiguitar-guitarpro-${tag#v}-linux-x86_64.zip"
+          curl -fsSL --retry 5 -o "$RUNNER_TEMP/$zip" "https://github.com/$repo/releases/download/$tag/$zip"
+          unzip -o "$RUNNER_TEMP/$zip" -d "$RUNNER_TEMP/guitarpro"
+          mapfile -t files < <(scripts/plugin-package/specs.sh "$RUNNER_TEMP/guitarpro")
+          scripts/plugin-package/flatpak.sh guitarpro "${tag#v}" x86_64 bundles "${files[@]}"
+          cp release/*.flatpak bundles/
+          ls -l bundles
+      - name: The repository
+        run: |
+          export GNUPGHOME="$RUNNER_TEMP/gnupg"
+          mkdir -m 700 "$GNUPGHOME"
+          gpg --batch --pinentry-mode loopback --passphrase trial \
+            --quick-gen-key "OxiGuitar trial <trial@example.invalid>" rsa3072 sign 1d
+          printf trial > "$RUNNER_TEMP/passphrase"
+          GPG_KEY_ID="$(gpg --with-colons --list-secret-keys | awk -F: '/^fpr:/ { print $10; exit }')" \
+            GPG_PASSPHRASE_FILE="$RUNNER_TEMP/passphrase" \
+            scripts/flatpak-repo.sh bundles "$RUNNER_TEMP/site/flatpak"
+          cat "$RUNNER_TEMP/site/flatpak/io.github.mateusrdp.OxiGuitar.flatpakref"
+      - name: Install from it
+        run: |
+          curl -fsSL --create-dirs -o "$RUNNER_TEMP/sample/oxiguitar-test-song.gp" \
+            https://raw.githubusercontent.com/mateusrdp/oxiguitar/main/fixtures/gp/oxiguitar-test-song.gp
+          scripts/test-flatpak.sh "$RUNNER_TEMP/site" "$RUNNER_TEMP/sample/oxiguitar-test-song.gp" trial guitarpro
