@@ -92,7 +92,7 @@ jobs:
           if [[ -n "$pkg" ]]; then
             scripts/test-install.sh "$RUNNER_TEMP/site" "$pkg" /usr/lib/oxiguitar/plugins
           fi
-      - uses: actions/upload-pages-artifact@v4
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: ${{ runner.temp }}/site
 
