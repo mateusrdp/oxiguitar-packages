@@ -74,7 +74,7 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       TAG: ${{ inputs.tag != '' && inputs.tag || github.event.release.tag_name }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           repository: mateusrdp/oxiguitar-packages
           ref: ${{ inputs.tools-ref }}

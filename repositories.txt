@@ -4,6 +4,8 @@
 # SHA256SUMS. Add a plugin by adding its line.
 mateusrdp/oxiguitar
 mateusrdp/oxiguitar-guitarpro
+mateusrdp/oxiguitar-musicxml
+mateusrdp/oxiguitar-midi-file
 mateusrdp/oxiguitar-midi
 mateusrdp/oxiguitar-wav
 mateusrdp/oxiguitar-alsa

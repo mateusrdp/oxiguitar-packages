@@ -1,0 +1,1022 @@
+{
+  "nodes": [
+    {
+      "id": "pipeline:.github/workflows/ci.yml",
+      "type": "pipeline",
+      "name": "ci.yml",
+      "filePath": ".github/workflows/ci.yml",
+      "summary": "CI workflow running formatting, lint, tests, license check and sign-off validation; ci-success job gates merges to develop and main.",
+      "tags": [
+        "ci-cd",
+        "testing",
+        "quality-gate",
+        "deployment"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "pipeline:.github/workflows/plugin-publish.yml",
+      "type": "pipeline",
+      "name": "plugin-publish.yml",
+      "filePath": ".github/workflows/plugin-publish.yml",
+      "summary": "Publishes a plugin release: verifies release artifacts, sends repository_dispatch to oxiguitar-packages to update apt/dnf repositories.",
+      "tags": [
+        "ci-cd",
+        "deployment",
+        "plugin",
+        "release"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "pipeline:.github/workflows/plugin-release-try.yml",
+      "type": "pipeline",
+      "name": "plugin-release-try.yml",
+      "filePath": ".github/workflows/plugin-release-try.yml",
+      "summary": "Trial plugin release workflow for testing the release pipeline without publishing.",
+      "tags": [
+        "ci-cd",
+        "testing",
+        "plugin",
+        "release"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "pipeline:.github/workflows/plugin-release.yml",
+      "type": "pipeline",
+      "name": "plugin-release.yml",
+      "filePath": ".github/workflows/plugin-release.yml",
+      "summary": "Builds plugin .oxp packages for Linux x86_64, aarch64, Windows x86_64, ARM64, and macOS universal; produces deb, rpm, zip, and Inno Setup installers.",
+      "tags": [
+        "ci-cd",
+        "build",
+        "cross-platform",
+        "plugin",
+        "deployment"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "pipeline:.github/workflows/release.yml",
+      "type": "pipeline",
+      "name": "release.yml",
+      "filePath": ".github/workflows/release.yml",
+      "summary": "Releases a repository from repositories.txt or other-repositories.txt: merges develop to main, tags the merge, pushes the tag to trigger the plugin's release workflow.",
+      "tags": [
+        "ci-cd",
+        "release",
+        "deployment",
+        "versioning"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "pipeline:.github/workflows/site.yml",
+      "type": "pipeline",
+      "name": "site.yml",
+      "filePath": ".github/workflows/site.yml",
+      "summary": "Builds apt and dnf repositories from the latest plugin releases, signs them with GPG, and publishes to GitHub Pages.",
+      "tags": [
+        "ci-cd",
+        "deployment",
+        "repository",
+        "signing"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:CLAUDE.md",
+      "type": "document",
+      "name": "CLAUDE.md",
+      "filePath": "CLAUDE.md",
+      "summary": "Standing rules for working on oxiguitar-packages with Claude: conventions for branches, commits, and repository-specific guidelines.",
+      "tags": [
+        "documentation",
+        "conventions",
+        "development"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:CONTRIBUTING.md",
+      "type": "document",
+      "name": "CONTRIBUTING.md",
+      "filePath": "CONTRIBUTING.md",
+      "summary": "Contribution guidelines covering branch and pull request workflow, and Developer Certificate of Origin sign-off requirements.",
+      "tags": [
+        "documentation",
+        "conventions",
+        "development"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "README.md",
+      "summary": "Project overview with installation instructions for apt and dnf repositories, plugin packaging notes, and signing key documentation.",
+      "tags": [
+        "documentation",
+        "entry-point",
+        "overview",
+        "installation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:RELEASING.md",
+      "type": "document",
+      "name": "RELEASING.md",
+      "filePath": "RELEASING.md",
+      "summary": "Release procedures: one-time GitHub App setup, granting the release app access to branch rules, and troubleshooting half-way workflow runs.",
+      "tags": [
+        "documentation",
+        "release",
+        "deployment"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:clippy.toml",
+      "type": "config",
+      "name": "clippy.toml",
+      "filePath": "clippy.toml",
+      "summary": "Rust clippy linter configuration for the project.",
+      "tags": [
+        "configuration",
+        "rust",
+        "linting"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:deny.toml",
+      "type": "config",
+      "name": "deny.toml",
+      "filePath": "deny.toml",
+      "summary": "cargo-deny configuration for dependency graph analysis, license compliance, advisory checks, banned crates, and source verification.",
+      "tags": [
+        "configuration",
+        "rust",
+        "security",
+        "licensing"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:other-repositories.txt",
+      "type": "document",
+      "name": "other-repositories.txt",
+      "filePath": "other-repositories.txt",
+      "summary": "List of additional repositories beyond the primary apt and dnf ones.",
+      "tags": [
+        "documentation",
+        "metadata"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:repositories.txt",
+      "type": "document",
+      "name": "repositories.txt",
+      "filePath": "repositories.txt",
+      "summary": "List of repositories (apt and dnf) managed by this project for OxiGuitar and its plugins.",
+      "tags": [
+        "documentation",
+        "metadata",
+        "configuration"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:rustfmt.toml",
+      "type": "config",
+      "name": "rustfmt.toml",
+      "filePath": "rustfmt.toml",
+      "summary": "Rust formatting configuration for consistent code style.",
+      "tags": [
+        "configuration",
+        "rust",
+        "formatting"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:scripts/build-site.sh",
+      "type": "file",
+      "name": "build-site.sh",
+      "filePath": "scripts/build-site.sh",
+      "summary": "Builds the GitHub Pages site from site-src, installs dependencies, and outputs the built site for deployment.",
+      "tags": [
+        "script",
+        "build",
+        "deployment",
+        "site"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:scripts/check-dco.sh",
+      "type": "file",
+      "name": "check-dco.sh",
+      "filePath": "scripts/check-dco.sh",
+      "summary": "Validates that commit messages include a valid Developer Certificate of Origin sign-off line.",
+      "tags": [
+        "script",
+        "quality-gate",
+        "conventions"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:scripts/fetch-packages.sh",
+      "type": "file",
+      "name": "fetch-packages.sh",
+      "filePath": "scripts/fetch-packages.sh",
+      "summary": "Downloads plugin packages from GitHub releases for building the apt/dnf repositories.",
+      "tags": [
+        "script",
+        "build",
+        "packages"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:scripts/make-test-packages.sh",
+      "type": "file",
+      "name": "make-test-packages.sh",
+      "filePath": "scripts/make-test-packages.sh",
+      "summary": "Creates test .deb and .rpm packages from plugin artifacts for local installation verification.",
+      "tags": [
+        "script",
+        "testing",
+        "packages"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:scripts/make-winget-manifests.sh",
+      "type": "file",
+      "name": "make-winget-manifests.sh",
+      "filePath": "scripts/make-winget-manifests.sh",
+      "summary": "Generates Windows Package Manager (winget) manifests for OxiGuitar releases.",
+      "tags": [
+        "script",
+        "winget",
+        "windows",
+        "manifest"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:scripts/test-install.sh",
+      "type": "file",
+      "name": "test-install.sh",
+      "filePath": "scripts/test-install.sh",
+      "summary": "Tests installation of generated packages on target systems to verify they work correctly.",
+      "tags": [
+        "script",
+        "testing",
+        "installation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:scripts/plugin-package/check-assets.sh",
+      "type": "file",
+      "name": "check-assets.sh",
+      "filePath": "scripts/plugin-package/check-assets.sh",
+      "summary": "Validates that plugin release assets (checksums, file presence) match expected values.",
+      "tags": [
+        "script",
+        "validation",
+        "plugin",
+        "quality"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:scripts/plugin-package/check-glibc.sh",
+      "type": "file",
+      "name": "check-glibc.sh",
+      "filePath": "scripts/plugin-package/check-glibc.sh",
+      "summary": "Checks the glibc version on the build target to ensure compatibility with older Linux systems.",
+      "tags": [
+        "script",
+        "compatibility",
+        "linux"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:scripts/plugin-package/deb.sh",
+      "type": "file",
+      "name": "deb.sh",
+      "filePath": "scripts/plugin-package/deb.sh",
+      "summary": "Builds .deb packages for OxiGuitar plugins on Linux, handling architecture-specific packaging.",
+      "tags": [
+        "script",
+        "deb",
+        "linux",
+        "plugin",
+        "packages"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:scripts/plugin-package/macos-pkg.sh",
+      "type": "file",
+      "name": "macos-pkg.sh",
+      "filePath": "scripts/plugin-package/macos-pkg.sh",
+      "summary": "Builds macOS installer packages for OxiGuitar plugins.",
+      "tags": [
+        "script",
+        "macos",
+        "plugin",
+        "packages"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:scripts/plugin-package/rpm.sh",
+      "type": "file",
+      "name": "rpm.sh",
+      "filePath": "scripts/plugin-package/rpm.sh",
+      "summary": "Builds .rpm packages for OxiGuitar plugins on Linux, handling architecture-specific packaging.",
+      "tags": [
+        "script",
+        "rpm",
+        "linux",
+        "plugin",
+        "packages"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:scripts/plugin-package/specs.sh",
+      "type": "file",
+      "name": "specs.sh",
+      "filePath": "scripts/plugin-package/specs.sh",
+      "summary": "Generates RPM spec file content for plugin packages.",
+      "tags": [
+        "script",
+        "rpm",
+        "spec",
+        "plugin"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:scripts/plugin-package/windows.sh",
+      "type": "file",
+      "name": "windows.sh",
+      "filePath": "scripts/plugin-package/windows.sh",
+      "summary": "Builds Windows installers for OxiGuitar plugins using Inno Setup, with the win function handling architecture-specific builds.",
+      "tags": [
+        "script",
+        "windows",
+        "plugin",
+        "packages",
+        "inno-setup"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:.github/dependabot.yml",
+      "type": "config",
+      "name": "dependabot.yml",
+      "filePath": ".github/dependabot.yml",
+      "summary": "Dependabot configuration for automated dependency updates across the repository.",
+      "tags": [
+        "configuration",
+        "dependency-management",
+        "automation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.github/pull_request_template.md",
+      "type": "document",
+      "name": "pull_request_template.md",
+      "filePath": ".github/pull_request_template.md",
+      "summary": "GitHub pull request template with sections for what changed, how to try it, and a checklist.",
+      "tags": [
+        "documentation",
+        "conventions",
+        "development"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/winget.md",
+      "type": "document",
+      "name": "winget.md",
+      "filePath": "docs/winget.md",
+      "summary": "Documentation for Windows Package Manager (winget) submissions: initial package submission process and automated later releases.",
+      "tags": [
+        "documentation",
+        "winget",
+        "windows"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:plugins/trial/Cargo.toml",
+      "type": "config",
+      "name": "Cargo.toml",
+      "filePath": "plugins/trial/Cargo.toml",
+      "summary": "Rust workspace configuration for the trial plugin, defining workspace.package metadata, shared dependencies, and release profile.",
+      "tags": [
+        "configuration",
+        "rust",
+        "workspace",
+        "plugin"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:plugins/trial/build-oxp.sh",
+      "type": "file",
+      "name": "build-oxp.sh",
+      "filePath": "plugins/trial/build-oxp.sh",
+      "summary": "Builds the .oxp plugin package for the trial plugin.",
+      "tags": [
+        "script",
+        "build",
+        "plugin",
+        "oxp"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:plugins/trial/first/Cargo.toml",
+      "type": "config",
+      "name": "Cargo.toml",
+      "filePath": "plugins/trial/first/Cargo.toml",
+      "summary": "First trial plugin crate: defines package metadata, lib target, features, and dependencies.",
+      "tags": [
+        "configuration",
+        "rust",
+        "plugin"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:plugins/trial/first/manifest.json",
+      "type": "config",
+      "name": "manifest.json",
+      "filePath": "plugins/trial/first/manifest.json",
+      "summary": "Plugin manifest for the first trial plugin defining interface, id, name, version, description, authors, license, homepage, and effects.",
+      "tags": [
+        "configuration",
+        "plugin",
+        "manifest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:plugins/trial/first/src/lib.rs",
+      "type": "file",
+      "name": "lib.rs",
+      "filePath": "plugins/trial/first/src/lib.rs",
+      "summary": "First trial plugin implementation: Trial class with start, effect, and prepare methods; Pass struct with process method; exports Trial.",
+      "tags": [
+        "code",
+        "plugin",
+        "trial",
+        "oxiguitar-plugin"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:plugins/trial/second/Cargo.toml",
+      "type": "config",
+      "name": "Cargo.toml",
+      "filePath": "plugins/trial/second/Cargo.toml",
+      "summary": "Second trial plugin crate: defines package metadata, lib target, features, and dependencies.",
+      "tags": [
+        "configuration",
+        "rust",
+        "plugin"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:plugins/trial/second/manifest.json",
+      "type": "config",
+      "name": "manifest.json",
+      "filePath": "plugins/trial/second/manifest.json",
+      "summary": "Plugin manifest for the second trial plugin defining interface, id, name, version, description, authors, license, homepage, and effects.",
+      "tags": [
+        "configuration",
+        "plugin",
+        "manifest"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:plugins/trial/second/src/lib.rs",
+      "type": "file",
+      "name": "lib.rs",
+      "filePath": "plugins/trial/second/src/lib.rs",
+      "summary": "Second trial plugin implementation: Trial class with start, effect, and prepare methods; Pass struct with process method; exports Trial.",
+      "tags": [
+        "code",
+        "plugin",
+        "trial",
+        "oxiguitar-plugin"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:scripts/plugin-package/windows.iss",
+      "type": "file",
+      "name": "windows.iss",
+      "filePath": "scripts/plugin-package/windows.iss",
+      "summary": "Inno Setup script for building Windows installers for OxiGuitar plugins.",
+      "tags": [
+        "script",
+        "windows",
+        "inno-setup",
+        "installer"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:scripts/release/bump.sh",
+      "type": "file",
+      "name": "bump.sh",
+      "filePath": "scripts/release/bump.sh",
+      "summary": "Version bumping script for repositories: finds version strings in Cargo.toml, manifests, and Cargo.lock; moves CHANGELOG [Unreleased] section under the new version.",
+      "tags": [
+        "script",
+        "release",
+        "versioning",
+        "changelog"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:scripts/release/test-bump.sh",
+      "type": "file",
+      "name": "test-bump.sh",
+      "filePath": "scripts/release/test-bump.sh",
+      "summary": "Tests the version bump process without making actual changes: fail, repo, and commit helper functions.",
+      "tags": [
+        "script",
+        "testing",
+        "release",
+        "versioning"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:site-src/index.html",
+      "type": "file",
+      "name": "index.html",
+      "filePath": "site-src/index.html",
+      "summary": "Main page for the GitHub Pages site that hosts the apt/dnf repository installation instructions.",
+      "tags": [
+        "markup",
+        "site",
+        "documentation"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "pipeline:.github/workflows/plugin-release.yml",
+      "target": "pipeline:.github/workflows/plugin-publish.yml",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "pipeline:.github/workflows/plugin-publish.yml",
+      "target": "pipeline:.github/workflows/site.yml",
+      "type": "triggers",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "pipeline:.github/workflows/release.yml",
+      "target": "pipeline:.github/workflows/plugin-release.yml",
+      "type": "triggers",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "pipeline:.github/workflows/site.yml",
+      "target": "pipeline:.github/workflows/ci.yml",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "pipeline:.github/workflows/plugin-release-try.yml",
+      "target": "pipeline:.github/workflows/plugin-release.yml",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:CONTRIBUTING.md",
+      "target": "document:README.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:RELEASING.md",
+      "target": "document:README.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:CLAUDE.md",
+      "target": "document:CONTRIBUTING.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:deny.toml",
+      "target": "document:README.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:clippy.toml",
+      "target": "config:rustfmt.toml",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:clippy.toml",
+      "target": "config:deny.toml",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:scripts/build-site.sh",
+      "target": "pipeline:.github/workflows/site.yml",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:scripts/check-dco.sh",
+      "target": "pipeline:.github/workflows/ci.yml",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:scripts/fetch-packages.sh",
+      "target": "file:scripts/make-test-packages.sh",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:scripts/make-test-packages.sh",
+      "target": "file:scripts/test-install.sh",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:scripts/make-winget-manifests.sh",
+      "target": "document:docs/winget.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:scripts/plugin-package/check-assets.sh",
+      "target": "pipeline:.github/workflows/plugin-release.yml",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:scripts/plugin-package/check-glibc.sh",
+      "target": "file:scripts/plugin-package/deb.sh",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:scripts/plugin-package/deb.sh",
+      "target": "file:scripts/plugin-package/rpm.sh",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:scripts/plugin-package/rpm.sh",
+      "target": "file:scripts/plugin-package/specs.sh",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:scripts/plugin-package/windows.sh",
+      "target": "file:scripts/plugin-package/windows.iss",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:scripts/plugin-package/macos-pkg.sh",
+      "target": "pipeline:.github/workflows/plugin-release.yml",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:.github/dependabot.yml",
+      "target": "pipeline:.github/workflows/ci.yml",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:.github/pull_request_template.md",
+      "target": "document:CONTRIBUTING.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:plugins/trial/first/src/lib.rs",
+      "target": "config:plugins/trial/first/Cargo.toml",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:plugins/trial/first/src/lib.rs",
+      "target": "config:plugins/trial/first/manifest.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:plugins/trial/second/src/lib.rs",
+      "target": "config:plugins/trial/second/Cargo.toml",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:plugins/trial/second/src/lib.rs",
+      "target": "config:plugins/trial/second/manifest.json",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:plugins/trial/first/src/lib.rs",
+      "target": "file:plugins/trial/second/src/lib.rs",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:plugins/trial/first/Cargo.toml",
+      "target": "config:plugins/trial/second/Cargo.toml",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:plugins/trial/build-oxp.sh",
+      "target": "file:plugins/trial/first/src/lib.rs",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:scripts/release/bump.sh",
+      "target": "pipeline:.github/workflows/release.yml",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:scripts/release/test-bump.sh",
+      "target": "file:scripts/release/bump.sh",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:site-src/index.html",
+      "target": "pipeline:.github/workflows/site.yml",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/winget.md",
+      "target": "file:scripts/make-winget-manifests.sh",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:plugins/trial/Cargo.toml",
+      "target": "config:plugins/trial/first/Cargo.toml",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:plugins/trial/Cargo.toml",
+      "target": "config:plugins/trial/second/Cargo.toml",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ],
+  "layers": [
+    {
+      "id": "layer:ci-cd",
+      "name": "CI/CD Layer",
+      "description": "GitHub Actions workflows for continuous integration, plugin building and release, repository release management, and site deployment.",
+      "nodeIds": [
+        "pipeline:.github/workflows/ci.yml",
+        "pipeline:.github/workflows/plugin-publish.yml",
+        "pipeline:.github/workflows/plugin-release-try.yml",
+        "pipeline:.github/workflows/plugin-release.yml",
+        "pipeline:.github/workflows/release.yml",
+        "pipeline:.github/workflows/site.yml"
+      ]
+    },
+    {
+      "id": "layer:scripts",
+      "name": "Scripts Layer",
+      "description": "Build, packaging, and release scripts for generating apt/dnf packages, Windows installers, winget manifests, and testing installations.",
+      "nodeIds": [
+        "file:scripts/build-site.sh",
+        "file:scripts/check-dco.sh",
+        "file:scripts/fetch-packages.sh",
+        "file:scripts/make-test-packages.sh",
+        "file:scripts/make-winget-manifests.sh",
+        "file:scripts/test-install.sh",
+        "file:scripts/plugin-package/check-assets.sh",
+        "file:scripts/plugin-package/check-glibc.sh",
+        "file:scripts/plugin-package/deb.sh",
+        "file:scripts/plugin-package/macos-pkg.sh",
+        "file:scripts/plugin-package/rpm.sh",
+        "file:scripts/plugin-package/specs.sh",
+        "file:scripts/plugin-package/windows.sh",
+        "file:scripts/plugin-package/windows.iss",
+        "file:scripts/release/bump.sh",
+        "file:scripts/release/test-bump.sh"
+      ]
+    },
+    {
+      "id": "layer:plugins",
+      "name": "Plugin Layer",
+      "description": "Trial plugin source code (Rust crates) with their Cargo.toml configurations, manifest files, and build scripts.",
+      "nodeIds": [
+        "config:plugins/trial/Cargo.toml",
+        "file:plugins/trial/build-oxp.sh",
+        "config:plugins/trial/first/Cargo.toml",
+        "config:plugins/trial/first/manifest.json",
+        "file:plugins/trial/first/src/lib.rs",
+        "config:plugins/trial/second/Cargo.toml",
+        "config:plugins/trial/second/manifest.json",
+        "file:plugins/trial/second/src/lib.rs"
+      ]
+    },
+    {
+      "id": "layer:configuration",
+      "name": "Configuration Layer",
+      "description": "Project configuration files including Rust toolchain settings (clippy, deny, rustfmt), Dependabot, and plugin manifests.",
+      "nodeIds": [
+        "config:clippy.toml",
+        "config:deny.toml",
+        "config:rustfmt.toml",
+        "config:.github/dependabot.yml"
+      ]
+    },
+    {
+      "id": "layer:documentation",
+      "name": "Documentation Layer",
+      "description": "Project documentation including README, contributing guidelines, release procedures, standing rules, and repository metadata.",
+      "nodeIds": [
+        "document:CLAUDE.md",
+        "document:CONTRIBUTING.md",
+        "document:README.md",
+        "document:RELEASING.md",
+        "document:other-repositories.txt",
+        "document:repositories.txt",
+        "document:.github/pull_request_template.md",
+        "document:docs/winget.md"
+      ]
+    },
+    {
+      "id": "layer:site",
+      "name": "Site Layer",
+      "description": "GitHub Pages site source and winget documentation for the apt/dnf repository installation instructions.",
+      "nodeIds": [
+        "file:site-src/index.html"
+      ]
+    }
+  ],
+  "tour": [
+    {
+      "order": 1,
+      "title": "Project Overview",
+      "description": "This repository serves as the packaging and CI backbone for OxiGuitar, a guitar tablature viewer. It does not contain the application source code itself; instead, it manages the distribution pipeline: building plugin packages, signing apt/dnf repositories, and publishing them to GitHub Pages for end-user installation. README.md provides the entry point with installation instructions and an overview of the project's purpose.",
+      "nodeIds": [
+        "document:README.md",
+        "document:other-repositories.txt",
+        "document:repositories.txt"
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Contribution Guidelines",
+      "description": "Before diving into the code, understand the project's development conventions. CONTRIBUTING.md defines the branch and pull request workflow along with Developer Certificate of Origin (DCO) sign-off requirements. RELEASING.md covers the GitHub App setup and branch rule configuration needed to trigger automated releases. CLAUDE.md provides standing rules for working with the project's AI assistant, including branch and commit conventions.",
+      "nodeIds": [
+        "document:CONTRIBUTING.md",
+        "document:RELEASING.md",
+        "document:CLAUDE.md",
+        "document:.github/pull_request_template.md"
+      ]
+    },
+    {
+      "order": 3,
+      "title": "CI/CD Workflows",
+      "description": "The project's automation lives in six GitHub Actions workflows that form the CI/CD backbone. ci.yml enforces quality gates (formatting, linting, tests, license checks, and DCO validation) on every merge to develop and main. The plugin-release workflow is the most connected node with 4 incoming edges: it builds .oxp packages across Linux, Windows, and macOS, producing deb, rpm, zip, and Inno Setup installers. plugin-publish.yml triggers repository updates, while site.yml builds and publishes the apt/dnf repository index to GitHub Pages.",
+      "nodeIds": [
+        "pipeline:.github/workflows/ci.yml",
+        "pipeline:.github/workflows/plugin-release.yml",
+        "pipeline:.github/workflows/plugin-publish.yml",
+        "pipeline:.github/workflows/site.yml",
+        "pipeline:.github/workflows/release.yml"
+      ],
+      "languageLesson": "GitHub Actions workflows use 'on' triggers to define when they run, 'jobs' for parallelism, and 'steps' for sequential execution. Matrix builds test across multiple OS and architecture combinations. The repository_dispatch event enables cross-repository workflow triggering, which plugin-publish.yml uses to notify oxiguitar-packages when a new plugin release is ready."
+    },
+    {
+      "order": 4,
+      "title": "Release Pipeline",
+      "description": "The release flow connects multiple workflows and scripts into a coherent pipeline. release.yml triggers plugin-release.yml, which in turn triggers plugin-publish.yml, which ultimately triggers site.yml. The scripts layer provides the supporting tools: fetch-packages.sh downloads release artifacts, the plugin-package/ subdirectory contains platform-specific builders (deb.sh, rpm.sh, windows.sh), and bump.sh handles version bumping across Cargo.toml, manifests, and CHANGELOG files.",
+      "nodeIds": [
+        "file:scripts/fetch-packages.sh",
+        "file:scripts/plugin-package/deb.sh",
+        "file:scripts/plugin-package/rpm.sh",
+        "file:scripts/plugin-package/windows.sh",
+        "file:scripts/release/bump.sh"
+      ]
+    },
+    {
+      "order": 5,
+      "title": "Testing & Quality",
+      "description": "Quality assurance is woven into both the CI pipeline and the manual testing scripts. check-dco.sh validates commit sign-offs, make-test-packages.sh creates local .deb and .rpm packages for verification, test-install.sh confirms packages install correctly on target systems, and test-bump.sh exercises the version bump process safely. The trial plugin-release-try.yml workflow provides a sandbox to test the release pipeline without publishing.",
+      "nodeIds": [
+        "file:scripts/check-dco.sh",
+        "file:scripts/make-test-packages.sh",
+        "file:scripts/test-install.sh",
+        "file:scripts/release/test-bump.sh",
+        "pipeline:.github/workflows/plugin-release-try.yml"
+      ]
+    },
+    {
+      "order": 6,
+      "title": "Plugin Source Code",
+      "description": "The trial plugin directory contains two Rust crates that serve as the only real application code in this repository. Each plugin follows a consistent pattern: a Cargo.toml defines the crate metadata and dependencies, a manifest.json declares the plugin interface (id, name, version, effects), and lib.rs implements the Trial class with start, effect, and prepare methods plus a Pass struct with a process method. The build-oxp.sh script packages these crates into .oxp plugin archives.",
+      "nodeIds": [
+        "config:plugins/trial/Cargo.toml",
+        "file:plugins/trial/first/src/lib.rs",
+        "file:plugins/trial/second/src/lib.rs",
+        "config:plugins/trial/first/manifest.json",
+        "file:plugins/trial/build-oxp.sh"
+      ],
+      "languageLesson": "Rust plugin crates use the oxiguitar-plugin trait interface, implementing Trial and Pass types that the host application loads dynamically. The workspace Cargo.toml shares package metadata (version, authors, license) across crates via [workspace.package], reducing duplication. cargo-deny (deny.toml) enforces license compliance and bans unsafe dependencies at build time."
+    },
+    {
+      "order": 7,
+      "title": "Configuration & Site",
+      "description": "The configuration layer defines project-wide standards: clippy.toml and rustfmt.toml enforce Rust code style, deny.toml manages license compliance and dependency security, and dependabot.yml automates dependency updates. The site layer contains the single-page GitHub Pages site (index.html) that hosts the apt/dnf repository installation instructions, built by build-site.sh and deployed by site.yml. The winget.md documentation and make-winget-manifests.sh script handle Windows Package Manager submissions as a separate distribution channel.",
+      "nodeIds": [
+        "config:clippy.toml",
+        "config:deny.toml",
+        "config:rustfmt.toml",
+        "config:.github/dependabot.yml",
+        "file:site-src/index.html"
+      ]
+    }
+  ]
+}

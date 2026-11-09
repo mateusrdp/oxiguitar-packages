@@ -53,7 +53,7 @@ jobs:
       WANTED: ${{ inputs.version }}
       DRY_RUN: ${{ inputs.dry_run }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - name: Check the repository and the version asked for
         run: |
@@ -65,7 +65,7 @@ jobs:
 
       - name: Token for the repository, from the GitHub App
         id: app
-        uses: actions/create-github-app-token@v2
+        uses: actions/create-github-app-token@v3
         with:
           app-id: ${{ vars.RELEASE_APP_ID }}
           private-key: ${{ secrets.RELEASE_APP_KEY }}
@@ -73,7 +73,7 @@ jobs:
           repositories: ${{ inputs.repository }}
 
       - name: Check out develop
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
         with:
           repository: ${{ github.repository_owner }}/${{ inputs.repository }}
           ref: develop
