@@ -160,7 +160,7 @@ jobs:
     name: Repositories (build, sign, install)
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - name: Tools
         run: |
           sudo apt-get update
@@ -185,7 +185,7 @@ jobs:
     name: Release version bump
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - run: scripts/release/test-bump.sh
 
   winget:
@@ -195,7 +195,7 @@ jobs:
       run:
         shell: bash
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - name: Make sample manifests and validate them
         env:
           WINGET_SAMPLE: "1"
