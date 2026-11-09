@@ -1,9 +1,11 @@
 # Weekly version updates for the Rust crates and the workflows' actions, as
 # pull requests into develop. scripts/check-dco.sh skips Dependabot's commits.
+# The only Rust crates are the trial plugins the plugin-release workflow is
+# tried on (plugins/trial); the repository's root has no Cargo.toml.
 version: 2
 updates:
   - package-ecosystem: cargo
-    directory: /
+    directory: /plugins/trial
     target-branch: develop
     schedule:
       interval: weekly
