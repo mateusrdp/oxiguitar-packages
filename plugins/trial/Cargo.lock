@@ -38,7 +38,7 @@ checksum = "cf8baf1c55e62ffcace7a9f06f4bd9cd3f0c4beb022d3b367256b91b87513d98"
 [[package]]
 name = "oxiguitar-plugin"
 version = "1.4.0"
-source = "git+https://github.com/mateusrdp/oxiguitar?tag=v0.11.0#292dc2810445423343fb33f5f029027fd60e6ed0"
+source = "git+https://github.com/mateusrdp/oxiguitar?tag=v0.13.1#1dd6efb8d126165a8f4e9351c0d7b1c43023c917"
 dependencies = [
  "oxiguitar-plugin-api",
  "serde_json",
@@ -47,7 +47,7 @@ dependencies = [
 [[package]]
 name = "oxiguitar-plugin-api"
 version = "1.4.0"
-source = "git+https://github.com/mateusrdp/oxiguitar?tag=v0.11.0#292dc2810445423343fb33f5f029027fd60e6ed0"
+source = "git+https://github.com/mateusrdp/oxiguitar?tag=v0.13.1#1dd6efb8d126165a8f4e9351c0d7b1c43023c917"
 dependencies = [
  "postcard",
  "serde",
