@@ -10,7 +10,7 @@
 # folder OxiGuitar derives. It holds the plugin files under the names the
 # .deb gives them, and an AppStream add-on so software centres list it under
 # OxiGuitar. Needs flatpak, ostree and appstreamcli (Ubuntu: flatpak,
-# appstream); no SDK and no sandbox: the files are only copied. Used by
+# appstream, appstream-compose); no SDK and no sandbox: the files are only copied. Used by
 # .github/workflows/plugin-release.yml.
 #
 # Usage: scripts/plugin-package/flatpak.sh NAME VERSION ARCH OUT-DIR SRC[:DEST]...

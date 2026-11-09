@@ -164,7 +164,7 @@ jobs:
       - name: Tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y apt-utils createrepo-c rpm gnupg flatpak ostree appstream
+          sudo apt-get install -y apt-utils createrepo-c rpm gnupg flatpak ostree appstream appstream-compose
           pip install shellcheck-py
       - name: Shellcheck
         run: shellcheck scripts/*.sh scripts/*/*.sh plugins/trial/build-oxp.sh
