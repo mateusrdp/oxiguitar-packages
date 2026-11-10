@@ -1,6 +1,6 @@
-# Builds the apt and dnf repositories from the latest published release of
-# every repository in repositories.txt, signs them, and publishes them on
-# GitHub Pages.
+# Builds the apt, dnf and Flatpak repositories from the latest published
+# release of every repository in repositories.txt, signs them, and publishes
+# them on GitHub Pages.
 #
 # What starts it:
 #   - the `plugin-published` event, which a plugin repository's publish
@@ -57,7 +57,7 @@ jobs:
       - name: Tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y apt-utils createrepo-c rpm gnupg
+          sudo apt-get install -y apt-utils createrepo-c rpm gnupg flatpak ostree dbus
       - name: Import the signing key
         env:
           APT_SIGNING_KEY: ${{ secrets.APT_SIGNING_KEY }}
@@ -92,6 +92,28 @@ jobs:
           if [[ -n "$pkg" ]]; then
             scripts/test-install.sh "$RUNNER_TEMP/site" "$pkg" /usr/lib/oxiguitar/plugins
           fi
+      # The app and every plugin from the Flatpak repository, for this user,
+      # the runtime from Flathub, and the sample score opened in the sandbox
+      # (scripts/test-flatpak.sh). Skipped while no published release of the
+      # core has a Flatpak bundle.
+      - name: Install from the Flatpak repository
+        run: |
+          site="$RUNNER_TEMP/site"
+          if [[ ! -f "$site/flatpak/io.github.mateusrdp.OxiGuitar.flatpakref" ]]; then
+            echo "::notice::No OxiGuitar Flatpak in the repository yet: nothing to install."
+            exit 0
+          fi
+          # Ubuntu 24.04 keeps unprivileged user namespaces from bubblewrap.
+          sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+          mapfile -t plugins < <(ostree --repo="$site/flatpak/repo" refs \
+            | sed -n 's|^runtime/io\.github\.mateusrdp\.OxiGuitar\.Plugin\.\([^/]*\)/x86_64/stable$|\1|p')
+          sample=-
+          if [[ " ${plugins[*]} " == *" guitarpro "* ]]; then
+            sample="$RUNNER_TEMP/sample/oxiguitar-test-song.gp"
+            curl -fsSL --create-dirs -o "$sample" \
+              https://raw.githubusercontent.com/mateusrdp/oxiguitar/main/fixtures/gp/oxiguitar-test-song.gp
+          fi
+          scripts/test-flatpak.sh "$site" "$sample" "${plugins[@]}"
       - uses: actions/upload-pages-artifact@v5
         with:
           path: ${{ runner.temp }}/site
