@@ -2,7 +2,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Copyright (C) 2026 Mateus Rocha de Paula and the OxiGuitar contributors
 #
-# Makes small test packages (a made-up plugin, x86_64 and aarch64, with
+# Makes small test packages (a made-up plugin, x86_64 and aarch64, and its
+# Flatpak extension for this machine, with
 # OxiGuitar's own packaging scripts, and a made-up package that is the same on
 # every architecture, like the sound-set installer's), so the build of the site and its install
 # test don't depend on any release existing.
@@ -12,7 +13,7 @@
 set -euo pipefail
 tools="$(cd "${1:?usage: make-test-packages.sh SCRIPTS-DIR OUT-DIR}" && pwd)"
 out="${2:?}"
-mkdir -p "$out/deb" "$out/rpm"
+mkdir -p "$out/deb" "$out/rpm" "$out/flatpak"
 work="$(mktemp -d)"
 trap 'rm -rf "$work"' EXIT
 head -c 4096 /dev/urandom > "$work/test.oxp"
@@ -22,6 +23,9 @@ for arch in x86_64 aarch64; do
 done
 # rpmbuild builds for the machine's own processor only.
 "$tools/rpm.sh" test 0.0.1 "$(uname -m)" "$out/rpm" "$work/test.oxp" > /dev/null
+# The Flatpak extension, for this machine's processor (flatpak.sh exports
+# for the host only).
+"$tools/flatpak.sh" test 0.0.1 "$(uname -m)" "$out/flatpak" "$work/test.oxp" > /dev/null
 
 # An architecture-independent package: Architecture: all and noarch.
 tree="$work/testall"

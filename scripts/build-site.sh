@@ -2,9 +2,9 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Copyright (C) 2026 Mateus Rocha de Paula and the OxiGuitar contributors
 #
-# Builds the whole site (the apt repository, the dnf repository, the public
-# key and the pages that explain them) from the .deb and .rpm files in
-# PACKAGES/deb and PACKAGES/rpm, signed with the key GPG_KEY_ID found in the
+# Builds the whole site (the apt repository, the dnf repository, the Flatpak
+# repository, the public key and the pages that explain them) from the .deb,
+# .rpm and .flatpak files in PACKAGES/deb, PACKAGES/rpm and PACKAGES/flatpak, signed with the key GPG_KEY_ID found in the
 # keyring GNUPGHOME points at. The site is made from scratch each time; nothing
 # of an earlier build is read.
 #
@@ -95,6 +95,16 @@ if [[ ${#rpms[@]} -gt 0 ]]; then
     done
 fi
 
+# ---- Flatpak -------------------------------------------------------------
+# Bundles come with releases made since #163; until one is there, no
+# Flatpak repository (scripts/flatpak-repo.sh).
+flatpaks=("$packages"/flatpak/*.flatpak)
+if [[ ${#flatpaks[@]} -gt 0 ]]; then
+    GPG_KEY_ID="$key" SITE_URL="$url" "$here/scripts/flatpak-repo.sh" "$packages/flatpak" "$site/flatpak"
+else
+    echo "::notice::No Flatpak bundle in any published release yet: no Flatpak repository."
+fi
+
 # ---- the files that tell people how to use it ----------------------------
 cat > "$site/oxiguitar.sources" <<SOURCES
 Types: deb
@@ -121,4 +131,10 @@ touch "$site/.nojekyll"
     for arch in amd64 arm64; do
         grep -E '^(Package|Version):' "$suite/main/binary-$arch/Packages" | paste - - | sed "s/^/  [$arch] /"
     done
+    if [[ -d "$site/flatpak/repo" ]]; then
+        echo "Refs in the Flatpak repository:"
+        ostree --repo="$site/flatpak/repo" refs | grep -E '^(app|runtime)/' | sort | while read -r ref; do
+            printf '  %s %s\n' "$ref" "$(ostree --repo="$site/flatpak/repo" show "$ref" | awk '/^Date:/ { print $2; exit }')"
+        done
+    fi
 } | tee "$site/packages.txt"

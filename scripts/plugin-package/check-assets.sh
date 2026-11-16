@@ -4,8 +4,8 @@
 #
 # Checks that a plugin's release holds every file it should, and that
 # SHA256SUMS agrees with them: for each of Linux x86_64 and aarch64, Windows
-# x86_64 and arm64 and macOS universal a zip, and a .deb and .rpm for each
-# Linux processor, a setup .exe for each Windows one, one macOS .pkg
+# x86_64 and arm64 and macOS universal a zip, and a .deb, .rpm and Flatpak
+# for each Linux processor, a setup .exe for each Windows one, one macOS .pkg
 # (#165). A plugin for some systems only (an audio output's) says which in
 # PLUGIN_SYSTEMS, such as "linux" (default: "linux windows macos"). Used by plugin-release.yml before the draft is made and by
 # plugin-publish.yml before the package repositories are told.
@@ -29,6 +29,8 @@ if [[ "$systems" == *" linux "* ]]; then
         "oxiguitar-${name}_${version}_arm64.deb"
         "oxiguitar-$name-$rpm_version-1.x86_64.rpm"
         "oxiguitar-$name-$rpm_version-1.aarch64.rpm"
+        "oxiguitar-$name-$version-x86_64.flatpak"
+        "oxiguitar-$name-$version-aarch64.flatpak"
     )
 fi
 if [[ "$systems" == *" windows "* ]]; then

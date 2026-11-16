@@ -16,7 +16,7 @@
 </head>
 <body>
 <h1>OxiGuitar packages</h1>
-<p>The apt and dnf repositories of <a href="https://github.com/mateusrdp/oxiguitar">OxiGuitar</a>, a free guitar tablature viewer, editor and player, and of its plugins. Each package is the one attached to the release of its own repository; this site only signs and lists them.</p>
+<p>The apt, dnf and Flatpak repositories of <a href="https://github.com/mateusrdp/oxiguitar">OxiGuitar</a>, a free guitar tablature viewer, editor and player, and of its plugins. Each package is the one attached to the release of its own repository; this site only signs and lists them.</p>
 
 <h2>Debian, Ubuntu and relatives (apt)</h2>
 <pre><code>sudo install -d -m 0755 /etc/apt/keyrings
@@ -30,8 +30,14 @@ sudo apt install -o APT::Install-Suggests="true" oxiguitar</code></pre>
 <pre><code>sudo curl -fsSL @URL@/oxiguitar.repo -o /etc/yum.repos.d/oxiguitar.repo
 sudo dnf install oxiguitar</code></pre>
 
+<h2>Any Linux (Flatpak)</h2>
+<pre><code>flatpak remote-add --if-not-exists oxiguitar @URL@/flatpak/oxiguitar.flatpakrepo
+flatpak install oxiguitar io.github.mateusrdp.OxiGuitar
+flatpak install oxiguitar io.github.mateusrdp.OxiGuitar.Plugin.guitarpro io.github.mateusrdp.OxiGuitar.Plugin.midi io.github.mateusrdp.OxiGuitar.Plugin.pipewire</code></pre>
+<p>Or open <a href="flatpak/io.github.mateusrdp.OxiGuitar.flatpakref">io.github.mateusrdp.OxiGuitar.flatpakref</a> in a software centre. Each plugin is an add-on of its own, <code>io.github.mateusrdp.OxiGuitar.Plugin.</code> and its short name (<code>guitarpro</code>, <code>midi</code>, <code>alsa</code>, <code>pipewire</code>, <code>nam</code>, <code>eq</code> and so on); none comes with the app on its own. The runtime comes from Flathub, which Flatpak adds if it isn't there. <code>flatpak update</code> keeps all of them current. Sound sets go in the Flatpak's own folder: the <a href="https://mateusrdp.github.io/oxiguitar/better-sounds.html">sound-set installer</a> fills it.</p>
+
 <h2>The signing key</h2>
-<p>Both repositories are signed with one key, fingerprint <code>@FINGERPRINT@</code>: <a href="oxiguitar.asc">oxiguitar.asc</a> (armoured) or <a href="oxiguitar.gpg">oxiguitar.gpg</a> (binary). Check the fingerprint against the one in the <a href="https://github.com/mateusrdp/oxiguitar-packages">repository's README</a>.</p>
+<p>All three repositories are signed with one key, fingerprint <code>@FINGERPRINT@</code>: <a href="oxiguitar.asc">oxiguitar.asc</a> (armoured) or <a href="oxiguitar.gpg">oxiguitar.gpg</a> (binary). Check the fingerprint against the one in the <a href="https://github.com/mateusrdp/oxiguitar-packages">repository's README</a>.</p>
 
 <p class="mute">Nothing here is ever downloaded by OxiGuitar itself. The list of packages in this build is in <a href="packages.txt">packages.txt</a>.</p>
 </body>
