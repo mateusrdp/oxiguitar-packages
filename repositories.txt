@@ -13,4 +13,5 @@ mateusrdp/oxiguitar-alsa
 mateusrdp/oxiguitar-pipewire
 mateusrdp/oxiguitar-nam
 mateusrdp/oxiguitar-eq
+mateusrdp/oxiguitar-wah
 mateusrdp/oxiguitar-bettersounds-soundfonts
