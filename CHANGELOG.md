@@ -14,4 +14,5 @@ follows [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 
+- **The Flatpak instructions** in the README and on the site add Flathub before this repository: `flatpak install` from this repository alone stops with "requires the runtime org.freedesktop.Platform … which was not found" where Flathub isn't set up (a `.flatpakrepo`, unlike the `.flatpakref`, can't name a runtime repository). They also list every plugin's Flatpak name, the plugins `oxiguitar` suggests now, and say that the sound-set package's question defaults to yes.
 - **Dependabot's weekly Rust update** looks in `plugins/trial`, where the trial plugins' crates are; it looked for a `Cargo.toml` at the root, which has none, and failed every week.
