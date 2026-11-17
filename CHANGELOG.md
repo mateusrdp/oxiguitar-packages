@@ -14,4 +14,5 @@ follows [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 
+- **A release no longer stops half way when CI is slow**: the Release workflow made one GitHub App token at the start, which lasts an hour, and used it for the waits for CI and for every push; with macOS runners queuing, oxiguitar-midi-file's 0.1.1 run on 16 Nov 2026 pushed its release commit, then failed with `Bad credentials (HTTP 401)` before merging and tagging. The waits now read the public repository with the workflow's own token, the release commit and the merge and tag each get a fresh app token, and a run started again with the same version finds a release commit already on develop and finishes it (RELEASING.md, "When a run stops half way").
 - **Dependabot's weekly Rust update** looks in `plugins/trial`, where the trial plugins' crates are; it looked for a `Cargo.toml` at the root, which has none, and failed every week.
