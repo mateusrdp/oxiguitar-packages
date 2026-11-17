@@ -8,7 +8,14 @@
 #
 # It acts through the GitHub App "OxiGuitar Release" (RELEASE_APP_ID and
 # RELEASE_APP_KEY, set up once: see RELEASING.md), which may push to develop
-# and main and create tags where a person would otherwise have to.
+# and main and create tags where a person would otherwise have to. An app's
+# token lasts one hour and waiting for CI can take longer (macOS runners
+# queue), so the waits read the public repository with this workflow's own
+# token, and each push takes a token of its own made just before it.
+#
+# A run that stopped after pushing "Release X" to develop (an expired token,
+# CI too slow) is finished by running it again with the same version: it
+# finds that commit on develop and goes on from there.
 #
 # The versions are changed by this repository's scripts/release/bump.sh,
 # which finds them by itself in a plugin repository (Cargo.toml, the
@@ -63,28 +70,19 @@ jobs:
           [[ "$WANTED" =~ ^(patch|minor|major|[0-9]+\.[0-9]+\.[0-9]+)$ ]] \
             || { echo "::error::version must be patch, minor, major or like 0.13.0"; exit 1; }
 
-      - name: Token for the repository, from the GitHub App
-        id: app
-        uses: actions/create-github-app-token@v3
-        with:
-          app-id: ${{ vars.RELEASE_APP_ID }}
-          private-key: ${{ secrets.RELEASE_APP_KEY }}
-          owner: ${{ github.repository_owner }}
-          repositories: ${{ inputs.repository }}
-
       - name: Check out develop
         uses: actions/checkout@v7
         with:
           repository: ${{ github.repository_owner }}/${{ inputs.repository }}
           ref: develop
-          token: ${{ steps.app.outputs.token }}
           fetch-depth: 0
+          persist-credentials: false
           path: target
 
       - name: Develop must be green
         working-directory: target
         env:
-          GH_TOKEN: ${{ steps.app.outputs.token }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           wait_for_ci() {  # SHA MINUTES: wait for ci-success on SHA; fail unless it passes
@@ -129,12 +127,20 @@ jobs:
           if git ls-remote --exit-code --tags origin "refs/tags/v$version" > /dev/null 2>&1; then
             echo "::error::v$version exists already"; exit 1
           fi
+          # A run that stopped after its release commit: go on from there.
+          if [[ "$(git log -1 --format=%s)" == "Release $version" ]]; then
+            echo "resume=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::develop already has \"Release $version\": merging and tagging it"
+          else
+            echo "resume=false" >> "$GITHUB_OUTPUT"
+          fi
           echo "version=$version" >> "$GITHUB_OUTPUT"
           # The first release may keep the version the repository was made with.
           echo "first=$([[ -z "$latest" ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
           echo "Releasing $version (latest tag: ${latest:-none})"
 
       - name: Prepare the release
+        if: ${{ steps.version.outputs.resume != 'true' }}
         working-directory: target
         env:
           VERSION: ${{ steps.version.outputs.version }}
@@ -154,35 +160,77 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
           git diff -- CHANGELOG.md | head -n 60
 
-      - name: Commit, merge into main, tag
-        if: ${{ !inputs.dry_run }}
+      - name: Token for the release commit, from the GitHub App
+        id: commit-token
+        if: ${{ !inputs.dry_run && steps.version.outputs.resume != 'true' }}
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ vars.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: ${{ inputs.repository }}
+
+      - name: Commit the release on develop
+        if: ${{ !inputs.dry_run && steps.version.outputs.resume != 'true' }}
         working-directory: target
         env:
-          GH_TOKEN: ${{ steps.app.outputs.token }}
-          SLUG: ${{ steps.app.outputs.app-slug }}
+          GH_TOKEN: ${{ steps.commit-token.outputs.token }}
+          SLUG: ${{ steps.commit-token.outputs.app-slug }}
           VERSION: ${{ steps.version.outputs.version }}
         run: |
           set -euo pipefail
-          source "$RUNNER_TEMP/wait_for_ci.sh"
-          id="$(gh api "users/$SLUG[bot]" --jq .id)"
-          git config user.name "$SLUG[bot]"
-          git config user.email "$id+$SLUG[bot]@users.noreply.github.com"
-
-          # The release commit on develop, once CI agrees with it.
+          id="$(gh api "users/${SLUG}[bot]" --jq .id)"
+          git config user.name "${SLUG}[bot]"
+          git config user.email "$id+${SLUG}[bot]@users.noreply.github.com"
           git add -A
           git commit -s -q -m "Release $VERSION"
-          git push origin HEAD:develop
+          git push "https://x-access-token:$GH_TOKEN@github.com/$OWNER/$REPO.git" HEAD:develop
+
+      - name: The release commit must be green
+        if: ${{ !inputs.dry_run }}
+        working-directory: target
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          source "$RUNNER_TEMP/wait_for_ci.sh"
           wait_for_ci "$(git rev-parse HEAD)" 120
 
-          # develop into main with a merge commit, and the tag on that commit.
+      - name: Token for main and the tag, from the GitHub App
+        id: tag-token
+        if: ${{ !inputs.dry_run }}
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ vars.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: ${{ inputs.repository }}
+
+      - name: Merge into main, tag
+        if: ${{ !inputs.dry_run }}
+        working-directory: target
+        env:
+          GH_TOKEN: ${{ steps.tag-token.outputs.token }}
+          SLUG: ${{ steps.tag-token.outputs.app-slug }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -euo pipefail
+          id="$(gh api "users/${SLUG}[bot]" --jq .id)"
+          git config user.name "${SLUG}[bot]"
+          git config user.email "$id+${SLUG}[bot]@users.noreply.github.com"
+          remote="https://x-access-token:$GH_TOKEN@github.com/$OWNER/$REPO.git"
+
+          # develop (the release commit) into main with a merge commit, and
+          # the tag on that commit.
+          release="$(git rev-parse HEAD)"
           git fetch -q origin main
           git checkout -q -B main origin/main
-          git merge --no-ff --signoff -q -m "Release v$VERSION: merge develop into main" origin/develop
+          git merge --no-ff --signoff -q -m "Release v$VERSION: merge develop into main" "$release"
           git tag -a "v$VERSION" -m "$REPO $VERSION"
-          git push origin main "v$VERSION"
+          git push "$remote" main "v$VERSION"
 
           # develop catches up with main (a fast-forward), so neither is "behind".
-          git push origin main:develop || echo "::warning::develop moved meanwhile; not fast-forwarded to main"
+          git push "$remote" main:develop || echo "::warning::develop moved meanwhile; not fast-forwarded to main"
 
           {
             echo "Tagged **v$VERSION** on main. Its Release workflow is building the draft:"
