@@ -8,7 +8,7 @@ mateusrdp/oxiguitar-musicxml
 mateusrdp/oxiguitar-midi-file
 mateusrdp/oxiguitar-tuxguitar
 mateusrdp/oxiguitar-midi
-mateusrdp/oxiguitar-wav
+mateusrdp/oxiguitar-export
 mateusrdp/oxiguitar-alsa
 mateusrdp/oxiguitar-pipewire
 mateusrdp/oxiguitar-nam

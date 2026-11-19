@@ -6,6 +6,10 @@ follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- **oxiguitar-wav is now oxiguitar-export** (OxiGuitar #313): `repositories.txt`, the winget id (`mateusrdp.OxiGuitar.Export`, "Audio export"; never submitted), the CI's sample winget manifests, and the Flatpak names on the site and in the README. Until the renamed plugin's first release is published, the site keeps taking wav 0.1.2 through GitHub's redirect; from then on the repositories hold `oxiguitar-export` (`io.github.mateusrdp.OxiGuitar.Plugin.export`) and no longer `oxiguitar-wav`. The package doesn't replace the old one: users remove `oxiguitar-wav` by hand (OxiGuitar uses the new plugin either way, since its manifest replaces `oxiguitar.wav`).
+
 ### Added
 
 - **oxiguitar-musicxml** in `repositories.txt` (OxiGuitar #223): the MusicXML plugin can be released with the Release button, and its `.deb` and `.rpm` join the apt and dnf repositories once its first release is published (until then the site skips it).

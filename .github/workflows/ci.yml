@@ -207,7 +207,7 @@ jobs:
         env:
           WINGET_SAMPLE: "1"
         run: |
-          for repo in guitarpro midi wav wasapi nam; do
+          for repo in guitarpro midi export wasapi nam; do
             scripts/make-winget-manifests.sh "mateusrdp/oxiguitar-$repo" v0.1.0 "out/$repo"
             winget validate --manifest "out/$repo"
           done
