@@ -16,6 +16,8 @@ follows [Semantic Versioning](https://semver.org/).
 - **oxiguitar-tuxguitar** in `repositories.txt` (OxiGuitar #223, #171): the TuxGuitar plugin can be released with the Release button, its packages joining apt and dnf once its first release is published and this line has reached `main`.
 - **oxiguitar-wah** in `repositories.txt` (OxiGuitar #250, #293): the wah-wah plugin can be released with the Release button (its first release, 0.1.0, needs OxiGuitar 0.20.0), its `.deb`, `.rpm` and Flatpak joining the repositories once that release is published and this line has reached `main`.
 
+- **oxiguitar-temperament** in `repositories.txt` (OxiGuitar #294): the temperament plugin can be released with the Release button (its first release, 0.1.0, needs the OxiGuitar release with plugin interface 1.12), its `.deb`, `.rpm` and Flatpak (`io.github.mateusrdp.OxiGuitar.Plugin.temperament`) joining the repositories once that release is published and this line has reached `main`.
+
 ### Fixed
 
 - **The Flatpak instructions** in the README and on the site add Flathub before this repository: `flatpak install` from this repository alone stops with "requires the runtime org.freedesktop.Platform … which was not found" where Flathub isn't set up (a `.flatpakrepo`, unlike the `.flatpakref`, can't name a runtime repository). They also list every plugin's Flatpak name, the plugins `oxiguitar` suggests now, and say that the sound-set package's question defaults to yes.
