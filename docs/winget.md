@@ -1,7 +1,7 @@
 # winget
 
 Each plugin with a Windows installer has a winget package,
-`mateusrdp.OxiGuitar.<Name>` (`GuitarPro`, `MIDI`, `WAV`, `WASAPI`, `NAM`),
+`mateusrdp.OxiGuitar.<Name>` (`GuitarPro`, `MIDI`, `Export`, `WASAPI`, `NAM`),
 installing its per-user setup program (Inno Setup, no administrator rights)
 for x64 or arm64. Users run `winget install mateusrdp.OxiGuitar.MIDI`, and
 `winget upgrade --all` keeps them current.

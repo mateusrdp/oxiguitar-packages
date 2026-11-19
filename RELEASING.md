@@ -95,10 +95,19 @@ ticked. The run's summary shows the files it would change. Then run it for real.
 
 The steps are in order, so look at which one failed:
 
-- **Before "Commit, merge into main, tag"**: nothing was pushed; fix what the
-  message says and run again.
-- **After the release commit reached `develop`** (the CHANGELOG no longer has
-  an `[Unreleased]` entry): do not run the workflow again. Tag by hand on
-  github.com: Releases, **Draft a new release**, create the tag `vX.Y.Z` on
-  `main` after merging `develop` into `main` with a pull request, and carry on
-  with step 2. Or ask Claude.
+- **Before "Commit the release on develop"**: nothing was pushed; fix what
+  the message says and run again.
+- **After the release commit reached `develop`** (`Release X.Y.Z` is
+  develop's last commit; a token that expired while CI waited, or CI that
+  took longer than two hours): run **Release** again with the **same
+  version** (`X.Y.Z`, or `patch` if no tag was made since). It finds the
+  release commit, bumps nothing, waits for its CI and merges, tags and pushes
+  as usual. If something else was merged into develop since, develop's last
+  commit is no longer the release: then merge `develop` into `main` with a
+  pull request and create the tag `vX.Y.Z` on `main` by hand (Releases,
+  **Draft a new release**), or ask Claude.
+
+The app's tokens last an hour. The waits for CI read the repository with
+this workflow's own token, and each push gets a token made just before it,
+so a slow CI (macOS runners can queue for over an hour) no longer stops a
+run half way.

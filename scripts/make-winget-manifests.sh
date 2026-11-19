@@ -31,7 +31,7 @@ suffix="${repo#mateusrdp/oxiguitar-}"
 case "$suffix" in
     guitarpro) ident="GuitarPro" title="Guitar Pro" ;;
     midi) ident="MIDI" title="MIDI" ;;
-    wav) ident="WAV" title="WAV export" ;;
+    export) ident="Export" title="Audio export" ;;
     wasapi) ident="WASAPI" title="WASAPI audio output" ;;
     nam) ident="NAM" title="NAM amp models" ;;
     *) echo "make-winget-manifests.sh: no winget package planned for $repo" >&2; exit 2 ;;
