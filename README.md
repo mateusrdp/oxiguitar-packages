@@ -2,10 +2,11 @@
 
 apt, dnf and Flatpak repositories for OxiGuitar and its plugins
 
-Part of [OxiGuitar](https://github.com/mateusrdp/oxiguitar), a free, open-source
-guitar tablature and score viewer, editor and player for Windows, macOS and
-Linux. The user manual and the plugin developer guide live in the
-[OxiGuitar repository](https://github.com/mateusrdp/oxiguitar).
+Part of OxiGuitar, a free, open-source guitar tablature and score viewer,
+editor and player for Windows, macOS and Linux. The manual is at
+<https://mateusrdp.github.io/oxiguitar-packages/manual/>, and its source is in
+[docs/manual](docs/manual). It lists every package and links to the manual of
+each project.
 
 ## Using the repositories
 
