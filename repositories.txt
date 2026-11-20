@@ -15,4 +15,5 @@ mateusrdp/oxiguitar-nam
 mateusrdp/oxiguitar-eq
 mateusrdp/oxiguitar-wah
 mateusrdp/oxiguitar-temperament
+mateusrdp/oxiguitar-clips
 mateusrdp/oxiguitar-bettersounds-soundfonts
