@@ -18,6 +18,8 @@ follows [Semantic Versioning](https://semver.org/).
 
 - **oxiguitar-temperament** in `repositories.txt` (OxiGuitar #294): the temperament plugin can be released with the Release button (its first release, 0.1.0, needs the OxiGuitar release with plugin interface 1.12), its `.deb`, `.rpm` and Flatpak (`io.github.mateusrdp.OxiGuitar.Plugin.temperament`) joining the repositories once that release is published and this line has reached `main`.
 
+- **oxiguitar-clips** in `repositories.txt` (OxiGuitar #240): the audio-clips plugin can be released with the Release button (its first release, 0.1.0, needs the OxiGuitar release with plugin interface 1.13, 0.21.4), its `.deb`, `.rpm` and Flatpak (`io.github.mateusrdp.OxiGuitar.Plugin.clips`) joining the repositories once that release is published and this line has reached `main`.
+
 ### Fixed
 
 - **The Flatpak instructions** in the README and on the site add Flathub before this repository: `flatpak install` from this repository alone stops with "requires the runtime org.freedesktop.Platform … which was not found" where Flathub isn't set up (a `.flatpakrepo`, unlike the `.flatpakref`, can't name a runtime repository). They also list every plugin's Flatpak name, the plugins `oxiguitar` suggests now, and say that the sound-set package's question defaults to yes.
