@@ -27,6 +27,10 @@ concurrency:
   group: site
   cancel-in-progress: false
 
+env:
+  MDBOOK_VERSION: v0.5.4
+  MDBOOK_SHA256: 3f28de05dafca9d0f2eab99c662116b0e37b89b1d96a08f8f430b9eeae958cd7
+
 jobs:
   hand-over:
     name: Run on main
@@ -86,6 +90,25 @@ jobs:
         run: scripts/fetch-packages.sh "$RUNNER_TEMP/packages"
       - name: Build the site
         run: scripts/build-site.sh "$RUNNER_TEMP/packages" "$RUNNER_TEMP/site"
+      # The manual (docs/manual/) goes on the same site, at /manual/.
+      - name: Install mdBook
+        run: |
+          file="mdbook-$MDBOOK_VERSION-x86_64-unknown-linux-gnu.tar.gz"
+          mkdir -p "$RUNNER_TEMP/mdbook"
+          curl -fsSL -o "$RUNNER_TEMP/$file" \
+            "https://github.com/rust-lang/mdBook/releases/download/$MDBOOK_VERSION/$file"
+          echo "$MDBOOK_SHA256  $RUNNER_TEMP/$file" | sha256sum -c -
+          tar -xzf "$RUNNER_TEMP/$file" -C "$RUNNER_TEMP/mdbook"
+          echo "$RUNNER_TEMP/mdbook" >> "$GITHUB_PATH"
+      - name: Build the manual
+        run: |
+          set -o pipefail
+          mdbook build docs/manual 2>&1 | tee "$RUNNER_TEMP/mdbook.log"
+          if grep -E "WARN|ERROR" "$RUNNER_TEMP/mdbook.log"; then
+            echo "::error::mdbook build warned"
+            exit 1
+          fi
+          cp -R docs/manual/book "$RUNNER_TEMP/site/manual"
       - name: Install a package from it
         run: |
           pkg="$(ls "$RUNNER_TEMP/site/apt/pool/main" | grep -E '^oxiguitar-' | head -n 1 | cut -d_ -f1)"
