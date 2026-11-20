@@ -40,7 +40,7 @@ flatpak install oxiguitar io.github.mateusrdp.OxiGuitar
 flatpak install oxiguitar io.github.mateusrdp.OxiGuitar.Plugin.guitarpro io.github.mateusrdp.OxiGuitar.Plugin.midi io.github.mateusrdp.OxiGuitar.Plugin.pipewire
 ```
 
-Each plugin is a Flatpak extension of the app, `io.github.mateusrdp.OxiGuitar.Plugin.NAME` with NAME one of `guitarpro`, `midi`, `alsa`, `pipewire`, `nam`, `eq`, `wah`, `export`, `temperament`, `clips`, `musicxml`, `midi-file` and `tuxguitar`; none comes with the app on its own. `flatpak/io.github.mateusrdp.OxiGuitar.flatpakref` on the site installs the app and adds both repositories in one step.
+Each plugin is a Flatpak extension of the app, `io.github.mateusrdp.OxiGuitar.Plugin.NAME` with NAME one of `guitarpro`, `midi`, `alsa`, `pipewire`, `nam`, `eq`, `wah`, `export`, `temperament`, `clips`, `ai`, `musicxml`, `midi-file` and `tuxguitar`; none comes with the app on its own. `flatpak/io.github.mateusrdp.OxiGuitar.flatpakref` on the site installs the app and adds both repositories in one step.
 
 Plugins are the packages `oxiguitar-guitarpro`, `oxiguitar-midi`, `oxiguitar-nam`, and so on. The Windows-only (WASAPI) and macOS-only (CoreAudio) audio plugins are not in these repositories.
 
