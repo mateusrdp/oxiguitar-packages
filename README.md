@@ -2,10 +2,11 @@
 
 apt, dnf and Flatpak repositories for OxiGuitar and its plugins
 
-Part of [OxiGuitar](https://github.com/mateusrdp/oxiguitar), a free, open-source
-guitar tablature and score viewer, editor and player for Windows, macOS and
-Linux. The user manual and the plugin developer guide live in the
-[OxiGuitar repository](https://github.com/mateusrdp/oxiguitar).
+Part of OxiGuitar, a free, open-source guitar tablature and score viewer,
+editor and player for Windows, macOS and Linux. The manual is at
+<https://mateusrdp.github.io/oxiguitar-packages/manual/>, and its source is in
+[docs/manual](docs/manual). It lists every package and links to the manual of
+each project.
 
 ## Using the repositories
 
@@ -40,7 +41,7 @@ flatpak install oxiguitar io.github.mateusrdp.OxiGuitar
 flatpak install oxiguitar io.github.mateusrdp.OxiGuitar.Plugin.guitarpro io.github.mateusrdp.OxiGuitar.Plugin.midi io.github.mateusrdp.OxiGuitar.Plugin.pipewire
 ```
 
-Each plugin is a Flatpak extension of the app, `io.github.mateusrdp.OxiGuitar.Plugin.NAME` with NAME one of `guitarpro`, `midi`, `alsa`, `pipewire`, `nam`, `eq`, `wah`, `export`, `temperament`, `clips`, `musicxml`, `midi-file` and `tuxguitar`; none comes with the app on its own. `flatpak/io.github.mateusrdp.OxiGuitar.flatpakref` on the site installs the app and adds both repositories in one step.
+Each plugin is a Flatpak extension of the app, `io.github.mateusrdp.OxiGuitar.Plugin.NAME` with NAME one of `guitarpro`, `midi`, `alsa`, `pipewire`, `nam`, `eq`, `wah`, `export`, `temperament`, `clips`, `ai`, `musicxml`, `midi-file` and `tuxguitar`; none comes with the app on its own. `flatpak/io.github.mateusrdp.OxiGuitar.flatpakref` on the site installs the app and adds both repositories in one step.
 
 Plugins are the packages `oxiguitar-guitarpro`, `oxiguitar-midi`, `oxiguitar-nam`, and so on. The Windows-only (WASAPI) and macOS-only (CoreAudio) audio plugins are not in these repositories.
 
