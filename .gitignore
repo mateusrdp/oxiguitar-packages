@@ -12,6 +12,8 @@
 Thumbs.db
 
 /dist/
+/plugins/trial/target/
+/plugins/trial/dist/
 
 # Understand Anything analysis artifacts
 .ua/intermediate/

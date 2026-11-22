@@ -167,7 +167,19 @@ jobs:
           sudo apt-get install -y apt-utils createrepo-c rpm gnupg flatpak ostree appstream appstream-compose
           pip install shellcheck-py
       - name: Shellcheck
-        run: shellcheck scripts/*.sh scripts/*/*.sh plugins/trial/build-oxp.sh
+        run: shellcheck scripts/*.sh scripts/*/*.sh plugins/trial/build-oxp.sh tests/*.sh
+      - name: Release checks
+        run: tests/test-release-checks.sh
+      # Every feature on the manual's Features page names a stage of
+      # tests/suite.json that exists (docs/manual/src/testing.md; the full
+      # run is scripts/test-all.py).
+      - name: Features page
+        run: |
+          python3 scripts/test-all.py --features-only --out target/test-all/ci || {
+            cat target/test-all/ci/summary.md
+            echo "::error title=Features page::$(grep -E '^- ' target/test-all/ci/summary.md | head -n 20 | sed -z 's/%/%25/g; s/\n/%0A/g')"
+            exit 1
+          }
       - name: Test packages, a throwaway key and the site
         run: |
           export GNUPGHOME="$RUNNER_TEMP/gnupg"

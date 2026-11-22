@@ -6,3 +6,5 @@
 - [The packages and their manuals](plugins.md)
 - [Architecture and strategy](how-it-works.md)
 - [Requirements and assumptions](requirements.md)
+- [Features and their tests](features.md)
+- [Testing](testing.md)
