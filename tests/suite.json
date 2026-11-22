@@ -1,0 +1,140 @@
+{
+  "repository": "mateusrdp/oxiguitar-packages",
+  "stages": [
+    {
+      "name": "shell lint",
+      "run": [
+        "bash",
+        "-c",
+        "shellcheck scripts/*.sh scripts/*/*.sh plugins/trial/build-oxp.sh tests/*.sh"
+      ],
+      "needs": [
+        "bash",
+        "shellcheck"
+      ],
+      "doc": "shellcheck on every shell script"
+    },
+    {
+      "name": "release version bump",
+      "run": [
+        "bash",
+        "scripts/release/test-bump.sh"
+      ],
+      "needs": [
+        "bash",
+        "git"
+      ],
+      "doc": "`scripts/release/bump.sh` on made-up repositories shaped like ours, and its refusals (`scripts/release/test-bump.sh`)"
+    },
+    {
+      "name": "release checks",
+      "run": [
+        "bash",
+        "tests/test-release-checks.sh"
+      ],
+      "needs": [
+        "bash",
+        "sha256sum"
+      ],
+      "doc": "the checks a plugin release meets before it goes out, on made-up files: every file there and summed, no newer glibc than allowed (`tests/test-release-checks.sh`)"
+    },
+    {
+      "name": "package site",
+      "run": [
+        "bash",
+        "tests/test-site.sh"
+      ],
+      "os": [
+        "linux"
+      ],
+      "needs": [
+        "bash",
+        "gpg",
+        "dpkg-deb",
+        "apt-ftparchive",
+        "rpmbuild",
+        "createrepo_c",
+        "flatpak",
+        "ostree"
+      ],
+      "doc": "on Linux, test packages made and signed into an apt, dnf and Flatpak site with a throwaway key (`tests/test-site.sh`)"
+    },
+    {
+      "name": "installing from the site",
+      "run": [
+        "bash",
+        "tests/test-site.sh",
+        "--install"
+      ],
+      "os": [
+        "linux"
+      ],
+      "needs": [
+        "bash",
+        "gpg",
+        "dpkg-deb",
+        "apt-ftparchive",
+        "rpmbuild",
+        "createrepo_c",
+        "flatpak",
+        "ostree",
+        "docker"
+      ],
+      "ready": {
+        "run": [
+          "docker",
+          "info"
+        ],
+        "why": "docker is installed but isn't running (or this user can't use it)"
+      },
+      "doc": "on Linux, the same site, then both test packages installed from it with apt and dnf in Debian and Fedora containers (`tests/test-site.sh --install`; needs docker, and pulls the two images)"
+    },
+    {
+      "name": "winget manifests",
+      "run": [
+        "bash",
+        "-c",
+        "for repo in guitarpro midi export wasapi nam; do WINGET_SAMPLE=1 scripts/make-winget-manifests.sh \"mateusrdp/oxiguitar-$repo\" v0.1.0 \"target/winget/$repo\" && winget validate --manifest \"target/winget/$repo\" || exit 1; done"
+      ],
+      "os": [
+        "windows"
+      ],
+      "needs": [
+        "bash",
+        "winget"
+      ],
+      "doc": "on Windows, sample winget manifests made and validated by winget"
+    },
+    {
+      "name": "trial plugins",
+      "run": [
+        "bash",
+        "plugins/trial/build-oxp.sh"
+      ],
+      "os": [
+        "linux",
+        "windows"
+      ],
+      "needs": [
+        "bash",
+        "cargo"
+      ],
+      "doc": "on Linux and Windows, the trial plugins built into `.oxp` files as a plugin repository builds them (`plugins/trial/build-oxp.sh`)"
+    },
+    {
+      "name": "trial plugins' tests",
+      "run": [
+        "cargo",
+        "test",
+        "--manifest-path",
+        "plugins/trial/Cargo.toml",
+        "--workspace",
+        "--locked"
+      ],
+      "needs": [
+        "cargo"
+      ],
+      "doc": "the trial plugins' own tests"
+    }
+  ]
+}

@@ -17,7 +17,7 @@ set -euo pipefail
 name="${1:?usage: check-assets.sh NAME VERSION DIR}"
 version="${2:?}"
 dir="${3:?}"
-rpm_version="${version//-/~}"
+rpm_version="${version//-/\~}"
 
 systems=" ${PLUGIN_SYSTEMS:-linux windows macos} "
 want=(SHA256SUMS)

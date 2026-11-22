@@ -6,6 +6,16 @@ follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- **Every test with one command** (mateusrdp/oxiguitar#273): `scripts/test-all.py` builds and runs all of this repository's tests, with a progress bar, a summary to paste into an issue and a log to diagnose from. The manual has a Features page naming the tests of every feature (CI checks it) and a Testing page.
+- `tests/test-site.sh [--install]` does what CI's Repositories job does, on your machine, with nothing installed on it; `tests/test-release-checks.sh` tries `check-assets.sh` and `check-glibc.sh` on made-up files, in CI too.
+
+### Fixed
+
+- A plugin release with a dash in its version (`1.2.0-rc.1`) failed: bash 5.2 turned the `~` that `rpm.sh` and `check-assets.sh` put in place of the dash into the home folder's path.
+- The trial plugins' `Cargo.lock` named SDK tag v0.19.1 while their `Cargo.toml` asks for v0.11.0, so `build-oxp.sh`'s `--locked` build refused to start; the lock now agrees.
+
 ### Changed
 
 - **oxiguitar-wav is now oxiguitar-export** (OxiGuitar #313): `repositories.txt`, the winget id (`mateusrdp.OxiGuitar.Export`, "Audio export"; never submitted), the CI's sample winget manifests, and the Flatpak names on the site and in the README. Until the renamed plugin's first release is published, the site keeps taking wav 0.1.2 through GitHub's redirect; from then on the repositories hold `oxiguitar-export` (`io.github.mateusrdp.OxiGuitar.Plugin.export`) and no longer `oxiguitar-wav`. The package doesn't replace the old one: users remove `oxiguitar-wav` by hand (OxiGuitar uses the new plugin either way, since its manifest replaces `oxiguitar.wav`).

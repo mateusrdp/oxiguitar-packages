@@ -136,6 +136,14 @@ fingerprint is then written here:
 The site is deployed from `main`, so the first build comes after `develop` is
 merged into `main` (Actions, Site, Run workflow, branch `main`).
 
+## Testing
+
+Every test, with one command (the manual's Testing page says more, and how to report a failure):
+
+```sh
+python3 scripts/test-all.py
+```
+
 ## Licence
 
 GPL-3.0-or-later. See LICENSE.

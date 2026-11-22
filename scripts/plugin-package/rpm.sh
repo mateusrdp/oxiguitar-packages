@@ -35,7 +35,7 @@ recommends="${PLUGIN_RECOMMENDS_RPM-oxiguitar}"
 package="oxiguitar-$name"
 # RPM versions can't hold a hyphen or a tilde-free pre-release: 1.0.0-rc.1
 # becomes 1.0.0~rc.1.
-rpm_version="${version//-/~}"
+rpm_version="${version//-/\~}"
 
 work="$(mktemp -d)"
 trap 'rm -rf "$work"' EXIT
