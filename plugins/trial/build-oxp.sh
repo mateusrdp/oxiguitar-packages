@@ -19,7 +19,9 @@ for name in trial-first trial-second; do
     package="oxiguitar-$name-plugin"
     library="${package//-/_}"
     build() {
-        cargo rustc --locked --release -p "$package" --features oxp --crate-type cdylib "$@"
+        # OXIGUITAR_IGNORE_RUST_VERSION: scripts/test-all.py --ignore-rust-version.
+        cargo rustc --locked --release ${OXIGUITAR_IGNORE_RUST_VERSION:+--ignore-rust-version} \
+            -p "$package" --features oxp --crate-type cdylib "$@"
     }
     case "$host" in
         *apple*)
