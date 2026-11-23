@@ -23,7 +23,15 @@ Everything is done on github.com. A release is two clicks.
    rebuilds the signed apt and dnf repositories.
 
 A plugin is released on its own: neither OxiGuitar nor any other plugin
-needs a release with it. Its packages are made by this repository's
+needs a release with it. The exception is `oxiguitar-audio-cpal`, which the
+four audio output plugins (alsa, pipewire, wasapi, coreaudio) take by tag
+together with the SDK's tag and one cpal version. Its release is the tag:
+there is no GitHub Release page, and nothing in this repository builds it. When
+the SDK tag or cpal's version changes, release `oxiguitar-audio-cpal` first,
+then change both tags in each of the four plugins in one pull request each and
+refresh their `Cargo.lock` (`cargo update -p oxiguitar-audio-cpal -p cpal`);
+the plugins' `deny.toml` must allow its git source. Plugins on different SDK
+tags from the audio layer fail to build with two `Host` types. Its packages are made by this repository's
 `plugin-release.yml` (`@main`), so a change to the packaging, once merged
 into `main` here, is what the plugin's next release uses.
 

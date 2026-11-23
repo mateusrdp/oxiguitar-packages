@@ -6,6 +6,10 @@ follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- RELEASING.md says how `oxiguitar-audio-cpal` is released (its tag is the release) and the order of an SDK or cpal bump: that repository first, then the four audio plugins, tags and `Cargo.lock` together.
+
 ### Added
 
 - `oxiguitar-audio-cpal` in `other-repositories.txt`: the library the four audio output plugins share, moved out of OxiGuitar's repository (mateusrdp/oxiguitar#331), is released with the Release button like the plugins; its release is the tag.
