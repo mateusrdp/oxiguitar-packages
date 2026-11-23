@@ -5,7 +5,9 @@ Everything is done on github.com. A release is two clicks.
 1. **Actions > Release > Run workflow** (in this repository). Pick the
    repository (`oxiguitar`, `oxiguitar-guitarpro`, ...; any in `repositories.txt` or
    `other-repositories.txt`, the second being the Windows-only and macOS-only
-   plugins, which have no apt or dnf packages) and the version:
+   plugins, which have no apt or dnf packages, and `oxiguitar-audio-cpal`, a
+   library the audio output plugins take by tag, which has no Release
+   workflow of its own: its release is the tag) and the version:
    `patch`, `minor`, `major` (counted from its latest `v*` tag) or a number
    such as `0.13.0` (a repository's first release needs the number, and may
    keep the version it was made with, such as `0.1.0`). The workflow checks

@@ -8,3 +8,4 @@
 - [Requirements and assumptions](requirements.md)
 - [Features and their tests](features.md)
 - [Testing](testing.md)
+- [Credits](credits.md)

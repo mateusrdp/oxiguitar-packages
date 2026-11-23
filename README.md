@@ -2,6 +2,8 @@
 
 apt, dnf and Flatpak repositories for OxiGuitar and its plugins
 
+In plain words: a package repository is a web site laid out for your package manager (apt, dnf or Flatpak). Add it once, and your normal system updates keep OxiGuitar and its plugins up to date. Everything here is signed with one key, so your package manager refuses anything that didn't come from us. The [manual](https://mateusrdp.github.io/oxiguitar-packages/manual/) explains more.
+
 Part of OxiGuitar, a free, open-source guitar tablature and score viewer,
 editor and player for Windows, macOS and Linux. The manual is at
 <https://mateusrdp.github.io/oxiguitar-packages/manual/>, and its source is in
@@ -143,6 +145,10 @@ Every test, with one command (the manual's Testing page says more, and how to re
 ```sh
 python3 scripts/test-all.py
 ```
+
+## Credits
+
+Built with APT's `apt-ftparchive`, `dpkg-deb`, `rpmbuild`, [createrepo_c](https://github.com/rpm-software-management/createrepo_c), [Flatpak](https://flatpak.org/) and [OSTree](https://github.com/ostreedev/ostree), [AppStream](https://www.freedesktop.org/wiki/Distributions/AppStream/), [GnuPG](https://gnupg.org/), [Inno Setup](https://jrsoftware.org/isinfo.php) and Apple's `pkgbuild`, on GitHub Actions and Pages; the Flatpak runtime comes from [Flathub](https://flathub.org/). Thanks to the Debian, Fedora, Flatpak and Freedesktop communities. The manual's [Credits](https://mateusrdp.github.io/oxiguitar-packages/manual/credits.html) page lists every project with its authors and licence. Thank you to all of them.
 
 ## Licence
 
