@@ -8,6 +8,7 @@ follows [Semantic Versioning](https://semver.org/).
 
 ### Added
 
+- `oxiguitar-audio-cpal` in `other-repositories.txt`: the library the four audio output plugins share, moved out of OxiGuitar's repository (mateusrdp/oxiguitar#331), is released with the Release button like the plugins; its release is the tag.
 - **Every test with one command** (mateusrdp/oxiguitar#273): `scripts/test-all.py` builds and runs all of this repository's tests, with a progress bar, a summary to paste into an issue and a log to diagnose from. The manual has a Features page naming the tests of every feature (CI checks it) and a Testing page.
 - `tests/test-site.sh [--install]` does what CI's Repositories job does, on your machine, with nothing installed on it; `tests/test-release-checks.sh` tries `check-assets.sh` and `check-glibc.sh` on made-up files, in CI too.
 

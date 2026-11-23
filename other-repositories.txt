@@ -1,5 +1,9 @@
 # Repositories released with the Release workflow (Actions > Release) that
 # are not in the apt and dnf repositories: they have no .deb or .rpm, so
-# repositories.txt does not list them. One a line, owner/name.
+# repositories.txt does not list them. One a line, owner/name. The
+# Windows-only and macOS-only plugins, and oxiguitar-audio-cpal, the library
+# the four audio output plugins depend on by tag (a tag and nothing to
+# package).
 mateusrdp/oxiguitar-wasapi
 mateusrdp/oxiguitar-coreaudio
+mateusrdp/oxiguitar-audio-cpal
