@@ -19,6 +19,7 @@ follows [Semantic Versioning](https://semver.org/).
 ### Changed
 
 - **oxiguitar-wav is now oxiguitar-export** (OxiGuitar #313): `repositories.txt`, the winget id (`mateusrdp.OxiGuitar.Export`, "Audio export"; never submitted), the CI's sample winget manifests, and the Flatpak names on the site and in the README. Until the renamed plugin's first release is published, the site keeps taking wav 0.1.2 through GitHub's redirect; from then on the repositories hold `oxiguitar-export` (`io.github.mateusrdp.OxiGuitar.Plugin.export`) and no longer `oxiguitar-wav`. The package doesn't replace the old one: users remove `oxiguitar-wav` by hand (OxiGuitar uses the new plugin either way, since its manifest replaces `oxiguitar.wav`).
+- **The manual explains the ideas behind the plugin** (its overview, with pictures), shows how to use it with screenshots, says in Architecture and strategy what it can't do yet, what is left out on purpose and where help is wanted, and has a Credits page listing every project it uses, with links and thanks. The README has a plain-words introduction and a Credits section.
 
 ### Added
 
@@ -36,3 +37,4 @@ follows [Semantic Versioning](https://semver.org/).
 - **The Flatpak instructions** in the README and on the site add Flathub before this repository: `flatpak install` from this repository alone stops with "requires the runtime org.freedesktop.Platform … which was not found" where Flathub isn't set up (a `.flatpakrepo`, unlike the `.flatpakref`, can't name a runtime repository). They also list every plugin's Flatpak name, the plugins `oxiguitar` suggests now, and say that the sound-set package's question defaults to yes.
 - **A release no longer stops half way when CI is slow**: the Release workflow made one GitHub App token at the start, which lasts an hour, and used it for the waits for CI and for every push; with macOS runners queuing, oxiguitar-midi-file's 0.1.1 run on 16 Nov 2026 pushed its release commit, then failed with `Bad credentials (HTTP 401)` before merging and tagging. The waits now read the public repository with the workflow's own token, the release commit and the merge and tag each get a fresh app token, and a run started again with the same version finds a release commit already on develop and finishes it (RELEASING.md, "When a run stops half way").
 - **Dependabot's weekly Rust update** looks in `plugins/trial`, where the trial plugins' crates are; it looked for a `Cargo.toml` at the root, which has none, and failed every week.
+
