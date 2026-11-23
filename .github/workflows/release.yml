@@ -14,8 +14,11 @@
 # token, and each push takes a token of its own made just before it.
 #
 # A run that stopped after pushing "Release X" to develop (an expired token,
-# CI too slow) is finished by running it again with the same version: it
-# finds that commit on develop and goes on from there.
+# CI too slow, a runner that timed out) is finished by running it again with
+# the same version: it finds that commit on develop and goes on from there,
+# even when other commits (Dependabot's, say) landed on develop after it. Only
+# the release commit is waited for, merged and tagged; those commits stay on
+# develop for the next release.
 #
 # The versions are changed by this repository's scripts/release/bump.sh,
 # which finds them by itself in a plugin repository (Cargo.toml, the
@@ -127,12 +130,19 @@ jobs:
           if git ls-remote --exit-code --tags origin "refs/tags/v$version" > /dev/null 2>&1; then
             echo "::error::v$version exists already"; exit 1
           fi
-          # A run that stopped after its release commit: go on from there.
-          if [[ "$(git log -1 --format=%s)" == "Release $version" ]]; then
+          # A run that stopped after its release commit: go on from there. The
+          # commit is looked for since the latest tag, not only at the tip:
+          # a Dependabot merge after it must not make the release impossible
+          # (bump.sh would refuse the same version a second time).
+          range="HEAD"; [[ -n "$latest" ]] && range="v$latest..HEAD"
+          resumed="$(git log "$range" --format=%H -1 --grep="^Release $version\$")"
+          if [[ -n "$resumed" ]]; then
             echo "resume=true" >> "$GITHUB_OUTPUT"
-            echo "::notice::develop already has \"Release $version\": merging and tagging it"
+            echo "release=$resumed" >> "$GITHUB_OUTPUT"
+            echo "::notice::develop already has \"Release $version\" (${resumed:0:7}): merging and tagging it"
           else
             echo "resume=false" >> "$GITHUB_OUTPUT"
+            echo "release=" >> "$GITHUB_OUTPUT"
           fi
           echo "version=$version" >> "$GITHUB_OUTPUT"
           # The first release may keep the version the repository was made with.
@@ -177,6 +187,7 @@ jobs:
           GH_TOKEN: ${{ steps.commit-token.outputs.token }}
           SLUG: ${{ steps.commit-token.outputs.app-slug }}
           VERSION: ${{ steps.version.outputs.version }}
+          RESUMED: ${{ steps.version.outputs.release }}
         run: |
           set -euo pipefail
           id="$(gh api "users/${SLUG}[bot]" --jq .id)"
@@ -191,10 +202,11 @@ jobs:
         working-directory: target
         env:
           GH_TOKEN: ${{ github.token }}
+          RESUMED: ${{ steps.version.outputs.release }}
         run: |
           set -euo pipefail
           source "$RUNNER_TEMP/wait_for_ci.sh"
-          wait_for_ci "$(git rev-parse HEAD)" 120
+          wait_for_ci "${RESUMED:-$(git rev-parse HEAD)}" 120
 
       - name: Token for main and the tag, from the GitHub App
         id: tag-token
@@ -213,6 +225,7 @@ jobs:
           GH_TOKEN: ${{ steps.tag-token.outputs.token }}
           SLUG: ${{ steps.tag-token.outputs.app-slug }}
           VERSION: ${{ steps.version.outputs.version }}
+          RESUMED: ${{ steps.version.outputs.release }}
         run: |
           set -euo pipefail
           id="$(gh api "users/${SLUG}[bot]" --jq .id)"
@@ -222,7 +235,7 @@ jobs:
 
           # develop (the release commit) into main with a merge commit, and
           # the tag on that commit.
-          release="$(git rev-parse HEAD)"
+          release="${RESUMED:-$(git rev-parse HEAD)}"
           git fetch -q origin main
           git checkout -q -B main origin/main
           git merge --no-ff --signoff -q -m "Release v$VERSION: merge develop into main" "$release"
