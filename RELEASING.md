@@ -107,15 +107,17 @@ The steps are in order, so look at which one failed:
 
 - **Before "Commit the release on develop"**: nothing was pushed; fix what
   the message says and run again.
-- **After the release commit reached `develop`** (`Release X.Y.Z` is
-  develop's last commit; a token that expired while CI waited, or CI that
-  took longer than two hours): run **Release** again with the **same
+- **After the release commit reached `develop`** (`Release X.Y.Z` is on
+  develop; a token that expired while CI waited, CI that took longer than two
+  hours, or a runner that timed out): run **Release** again with the **same
   version** (`X.Y.Z`, or `patch` if no tag was made since). It finds the
-  release commit, bumps nothing, waits for its CI and merges, tags and pushes
-  as usual. If something else was merged into develop since, develop's last
-  commit is no longer the release: then merge `develop` into `main` with a
-  pull request and create the tag `vX.Y.Z` on `main` by hand (Releases,
-  **Draft a new release**), or ask Claude.
+  release commit among develop's commits since the latest tag, bumps nothing,
+  waits for that commit's CI and merges it, tags and pushes as usual. Commits
+  merged into develop after it (Dependabot's, say) are not part of the
+  release: they stay on develop for the next one. (Before 23 Nov 2026 the
+  release commit had to be develop's last, and a Dependabot merge in between
+  failed the run with "X.Y.Z is not higher than the current version": then
+  merge the release commit, not develop, into `main` by hand and tag it.)
 
 The app's tokens last an hour. The waits for CI read the repository with
 this workflow's own token, and each push gets a token made just before it,

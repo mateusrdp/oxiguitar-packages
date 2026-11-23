@@ -6,6 +6,10 @@ follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+
+- **Running Release again after a stopped run failed when anything had been merged into develop since** (oxiguitar-alsa 0.1.2, 23 Nov 2026: three Dependabot merges after `Release 0.1.2`, so the workflow tried to bump the same version again and `bump.sh` refused). It now finds the release commit anywhere since the latest tag, waits for that commit's CI and merges and tags exactly it.
+
 ### Changed
 
 - RELEASING.md says how `oxiguitar-audio-cpal` is released (its tag is the release) and the order of an SDK or cpal bump: that repository first, then the four audio plugins, tags and `Cargo.lock` together.
