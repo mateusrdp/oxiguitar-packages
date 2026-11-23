@@ -19,3 +19,26 @@ The plugins' release workflows call two reusable workflows from here, so a chang
 ## Releasing
 
 The maintainer makes a release with one button, Actions, Release, Run workflow, and then publishes the draft. `RELEASING.md` in this repository has the details.
+
+## Current limitations
+
+- **Linux only.** There is no winget (Windows) package yet, though the manifests are ready to go once a token for it exists; Homebrew was dropped. Windows and macOS users download installers from each release.
+- **Not on Flathub.** OxiGuitar's Flatpaks come from our own repository, so they don't show up in a software centre until you add it.
+- **Recent systems for `.deb` and `.rpm`.** They need glibc 2.39 or newer (Debian 13, Ubuntu 24.04, Fedora 40 and later). Older systems use the Flatpak or the AppImage.
+- **One signing key for everything.** If it ever had to change, every user would need to fetch the new one.
+- **Pre-releases.** Every package is still a pre-release until its v1.0.
+
+## Left out on purpose
+
+- **Flathub**, for now (Mateus, 9 November 2026): our own repository lets OxiGuitar and each plugin release on their own schedule, with the same signing as apt and dnf.
+- **Homebrew** (dropped, 5 November 2026).
+- **Paying for code signing** on Windows and Apple's notarisation. The installers work without it, with a warning the first time.
+- **Keeping state.** The site is built from scratch from the latest published releases every time, so nothing drifts and nothing needs cleaning up.
+- **Polling.** Nothing checks for new releases on a timer: a plugin's publish workflow tells this site when to build.
+
+## Where you can help
+
+- **Try the repositories on your distribution**, especially Fedora and ARM64 systems, and report what goes wrong.
+- **Check the Flatpak** in GNOME Software or KDE Discover, and tell us how it looks and behaves.
+- **Packaging know-how**: if you maintain packages for a distribution, a review of `scripts/plugin-package/` is welcome.
+
