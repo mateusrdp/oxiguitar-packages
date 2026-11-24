@@ -8,6 +8,9 @@ follows [Semantic Versioning](https://semver.org/).
 
 ### Fixed
 
+- **A release no longer stops on a red `ci-success` that a rerun would fix** (oxiguitar 0.21.8, 24 Nov 2026: a slow Ubuntu mirror failed the NET-5 job, and its rerun passed). The Release workflow's waits for CI, on develop and on the release commit, now run the failed jobs again when `ci-success` fails, twice at most, and go on waiting (`scripts/release/wait-for-ci.sh`, tested by `tests/test-wait-for-ci.sh`). This needs the release App's **Actions: Read and write** permission: RELEASING.md, "When CI fails during a release".
+- **A slow or stalled Ubuntu mirror no longer fails a job**: CI, the Site workflow, the plugin release workflow and its trial install packages with `scripts/apt-install.sh` (the same file as OxiGuitar's), which keeps trying for 20 minutes, cuts off only downloads, keeps what it downloaded and moves to the next mirror on each try.
+
 - **Running Release again after a stopped run failed when anything had been merged into develop since** (oxiguitar-alsa 0.1.2, 23 Nov 2026: three Dependabot merges after `Release 0.1.2`, so the workflow tried to bump the same version again and `bump.sh` refused). It now finds the release commit anywhere since the latest tag, waits for that commit's CI and merges and tags exactly it.
 
 ### Changed

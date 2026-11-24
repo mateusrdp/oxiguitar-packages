@@ -34,4 +34,5 @@ release); their tests try the same scripts on made-up packages and files.
 | Feature | Tests |
 | --- | --- |
 | A release's version bumped in one step in a single plugin, a workspace of plugins and a repository with a VERSION file, and the refusals (`scripts/release/bump.sh`) | `stage:release version bump` |
+| A release waits for `ci-success` and runs the failed jobs again (twice at most) when it fails, so a slow mirror or a cancelled runner does not stop it (`scripts/release/wait-for-ci.sh`) | `stage:release wait for CI` |
 | Every shell script passes shellcheck | `stage:shell lint` |

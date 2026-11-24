@@ -60,6 +60,8 @@ works for every repository, including plugins not made yet.
    - **Contents**: Read and write
    - **Workflows**: Read and write (a merge into `main` may carry workflow files)
    - **Checks**: Read-only (to see that CI passed)
+   - **Actions**: Read and write (to run CI's failed jobs again during a
+     release; see "When CI fails during a release")
    - **Metadata**: Read-only (set by GitHub)
 5. **Where can this GitHub App be installed?**: Only on this account.
 6. **Create GitHub App**. On the page that follows, copy the **App ID**.
@@ -100,6 +102,29 @@ repository has it except `oxiguitar-bettersounds-soundfonts`.
 
 Run **Release** with repository `oxiguitar`, version `patch` and **dry run**
 ticked. The run's summary shows the files it would change. Then run it for real.
+
+## When CI fails during a release
+
+Most red `ci-success` checks during a release were not the code: a slow
+Ubuntu mirror, a macOS runner cancelled before it started, a 503 from
+GitHub. So when `ci-success` fails on develop or on the release commit, the
+run starts the failed jobs of that CI run again and goes on waiting, twice
+at most (`scripts/release/wait-for-ci.sh`); the run's log says
+"running the failed jobs of ... again" with the link. A real failure fails
+every time and the release stops as before.
+
+This needs the App's **Actions: Read and write** permission. For an App made
+before 24 Nov 2026:
+
+1. github.com, **Settings**, **Developer settings**, **GitHub Apps**,
+   **OxiGuitar Release**, **Edit**, **Permissions & events**.
+2. **Repository permissions**, **Actions**: **Read and write**. **Save changes**.
+3. GitHub then asks the installation to accept it: **Settings**,
+   **Applications**, **Installed GitHub Apps**, **OxiGuitar Release**,
+   **Configure**, **Review request**, **Accept new permissions**.
+
+Without it the run says "no token to run the jobs again" and stops at the
+first failure, as it did before.
 
 ## When a run stops half way
 

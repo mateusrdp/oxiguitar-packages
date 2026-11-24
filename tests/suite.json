@@ -27,6 +27,19 @@
       "doc": "`scripts/release/bump.sh` on made-up repositories shaped like ours, and its refusals (`scripts/release/test-bump.sh`)"
     },
     {
+      "name": "release wait for CI",
+      "run": [
+        "bash",
+        "tests/test-wait-for-ci.sh"
+      ],
+      "needs": [
+        "bash",
+        "jq",
+        "openssl"
+      ],
+      "doc": "the Release workflow's wait for `ci-success`, against stand-ins for GitHub: a pass, a failure that passes when its failed jobs run again, one that stays red, no app key, a dry run, refused reruns (`tests/test-wait-for-ci.sh`)"
+    },
+    {
       "name": "release checks",
       "run": [
         "bash",

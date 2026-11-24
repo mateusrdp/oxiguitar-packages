@@ -13,6 +13,11 @@
 # queue), so the waits read the public repository with this workflow's own
 # token, and each push takes a token of its own made just before it.
 #
+# When ci-success fails on develop or on the release commit, the run starts
+# the failed jobs again (twice at most) and goes on waiting: most red checks
+# were a slow mirror or a cancelled runner. That needs the app's Actions
+# permission (RELEASING.md).
+#
 # A run that stopped after pushing "Release X" to develop (an expired token,
 # CI too slow, a runner that timed out) is finished by running it again with
 # the same version: it finds that commit on develop and goes on from there,
@@ -82,31 +87,22 @@ jobs:
           persist-credentials: false
           path: target
 
+      # Both waits run the failed jobs again when ci-success fails (at most
+      # twice), so a slow mirror or a cancelled runner does not stop the
+      # release: scripts/release/wait-for-ci.sh.
       - name: Develop must be green
         working-directory: target
         env:
           GH_TOKEN: ${{ github.token }}
+          RELEASE_APP_ID: ${{ vars.RELEASE_APP_ID }}
+          RELEASE_APP_KEY: ${{ secrets.RELEASE_APP_KEY }}
         run: |
           set -euo pipefail
-          wait_for_ci() {  # SHA MINUTES: wait for ci-success on SHA; fail unless it passes
-            local sha="$1" deadline=$((SECONDS + $2 * 60)) result
-            while :; do
-              result="$(gh api "repos/$OWNER/$REPO/commits/$sha/check-runs?per_page=100" \
-                --jq '[.check_runs[] | select(.name == "ci-success")] | first | .conclusion // "pending"')"
-              case "$result" in
-                success) return 0 ;;
-                pending|null) ;;
-                *) echo "::error::ci-success on ${sha:0:7} is $result"; return 1 ;;
-              esac
-              (( SECONDS < deadline )) || { echo "::error::ci-success on ${sha:0:7} did not finish in time"; return 1; }
-              sleep 60
-            done
-          }
-          declare -f wait_for_ci > "$RUNNER_TEMP/wait_for_ci.sh"
+          wait="$GITHUB_WORKSPACE/scripts/release/wait-for-ci.sh"
           if [[ "$DRY_RUN" == true ]]; then
-            wait_for_ci "$(git rev-parse HEAD)" 0 || echo "::warning::develop is not green; a real release would stop here"
+            "$wait" "$(git rev-parse HEAD)" 0 0 || echo "::warning::develop is not green; a real release would stop here"
           else
-            wait_for_ci "$(git rev-parse HEAD)" 90
+            "$wait" "$(git rev-parse HEAD)" 90
             echo "develop at $(git rev-parse --short HEAD) is green"
           fi
 
@@ -202,11 +198,12 @@ jobs:
         working-directory: target
         env:
           GH_TOKEN: ${{ github.token }}
+          RELEASE_APP_ID: ${{ vars.RELEASE_APP_ID }}
+          RELEASE_APP_KEY: ${{ secrets.RELEASE_APP_KEY }}
           RESUMED: ${{ steps.version.outputs.release }}
         run: |
           set -euo pipefail
-          source "$RUNNER_TEMP/wait_for_ci.sh"
-          wait_for_ci "${RESUMED:-$(git rev-parse HEAD)}" 120
+          "$GITHUB_WORKSPACE/scripts/release/wait-for-ci.sh" "${RESUMED:-$(git rev-parse HEAD)}" 120
 
       - name: Token for main and the tag, from the GitHub App
         id: tag-token
