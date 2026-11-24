@@ -27,6 +27,7 @@ It runs:
 1. shellcheck on every shell script;
 1. `scripts/release/bump.sh` on made-up repositories shaped like ours, and its refusals (`scripts/release/test-bump.sh`);
 1. the Release workflow's wait for `ci-success`, against stand-ins for GitHub: a pass, a failure that passes when its failed jobs run again, one that stays red, no app key, a dry run, refused reruns (`tests/test-wait-for-ci.sh`);
+1. `scripts/apt-install.sh` against a stand-in apt-get: a slow download let finish, a stuck one stopped and tried again on the next mirror, one that stays stuck, an apt error, `--recommends` (`tests/test-apt-install.sh`);
 1. the checks a plugin release meets before it goes out, on made-up files: every file there and summed, no newer glibc than allowed (`tests/test-release-checks.sh`);
 1. on Linux, test packages made and signed into an apt, dnf and Flatpak site with a throwaway key (`tests/test-site.sh`);
 1. on Linux, the same site, then both test packages installed from it with apt and dnf in Debian and Fedora containers (`tests/test-site.sh --install`; needs docker, and pulls the two images);

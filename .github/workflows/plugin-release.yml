@@ -203,7 +203,7 @@ jobs:
           targets: ${{ matrix.system == 'macos' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
       - if: matrix.system == 'linux' && inputs.apt-packages != ''
         run: ${{ github.workspace }}/.oxiguitar-tools/scripts/apt-install.sh ${{ inputs.apt-packages }}
-        timeout-minutes: 25
+        timeout-minutes: 60
       - if: inputs.test
         run: cargo test
       - run: rm -rf dist && ${{ inputs.build }}
@@ -255,7 +255,7 @@ jobs:
           name: oxp-linux-${{ matrix.arch }}
           path: oxp
       - run: tools/scripts/apt-install.sh rpm flatpak ostree appstream appstream-compose
-        timeout-minutes: 25
+        timeout-minutes: 60
       - name: Build the packages
         run: |
           name='${{ inputs.name }}'

@@ -70,7 +70,7 @@ jobs:
       - uses: Swatinem/rust-cache@v2
       - if: env.APT_PACKAGES != ''
         run: scripts/apt-install.sh $APT_PACKAGES
-        timeout-minutes: 25
+        timeout-minutes: 60
       - name: Clippy
         run: |
           set -o pipefail
@@ -110,7 +110,7 @@ jobs:
           key: ${{ matrix.toolchain }}
       - if: runner.os == 'Linux' && env.APT_PACKAGES != ''
         run: scripts/apt-install.sh $APT_PACKAGES
-        timeout-minutes: 25
+        timeout-minutes: 60
       # Failing tests also become an annotation, so they can be read without
       # downloading the job log. Bash on every runner, Windows included.
       - name: cargo test
@@ -206,6 +206,7 @@ jobs:
       - uses: actions/checkout@v7
       - run: scripts/release/test-bump.sh
       - run: tests/test-wait-for-ci.sh
+      - run: tests/test-apt-install.sh
 
   winget:
     name: Winget manifests
