@@ -6,6 +6,10 @@ follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- **oxiguitar-plugin-manager** is in `repositories.txt`, so its releases go into the apt, dnf and Flatpak repositories and the Release button can release it. No package recommends or suggests it, and the packages manual doesn't list it (mateusrdp/oxiguitar#344). Until its first release, the Site workflow skips it.
+
 ### Fixed
 
 - **A release no longer stops on a red `ci-success` that a rerun would fix** (oxiguitar 0.21.8, 24 Nov 2026: a slow Ubuntu mirror failed the NET-5 job, and its rerun passed). The Release workflow's waits for CI, on develop and on the release commit, now run the failed jobs again when `ci-success` fails, twice at most, and go on waiting (`scripts/release/wait-for-ci.sh`, tested by `tests/test-wait-for-ci.sh`). This needs the release App's **Actions: Read and write** permission: RELEASING.md, "When CI fails during a release".
