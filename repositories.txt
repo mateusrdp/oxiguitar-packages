@@ -18,3 +18,4 @@ mateusrdp/oxiguitar-temperament
 mateusrdp/oxiguitar-clips
 mateusrdp/oxiguitar-bettersounds-soundfonts
 mateusrdp/oxiguitar-ai
+mateusrdp/oxiguitar-plugin-manager
