@@ -97,8 +97,7 @@ jobs:
       - uses: actions/checkout@v7
       - name: Flatpak tools
         run: |
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends flatpak ostree appstream appstream-compose dbus gnupg unzip
+          scripts/apt-install.sh flatpak ostree appstream appstream-compose dbus gnupg unzip
           # Ubuntu 24.04 keeps unprivileged user namespaces from bubblewrap.
           sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
       - uses: actions/download-artifact@v8

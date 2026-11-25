@@ -88,6 +88,15 @@ mkdir "$work/elf" && cp "$bin" "$work/elf/" && echo "not an ELF file" > "$work/e
 grep -q 'notes.txt' "$work/log" && fail "check-glibc.sh looked at a file that isn't ELF"
 if "$glibc" 2.0 "$work/elf" > "$work/log" 2>&1; then fail "check-glibc.sh passed $bin as needing glibc 2.0 at most"; fi
 grep -q 'newer than 2.0' "$work/log" || fail "check-glibc.sh didn't say which glibc: $(cat "$work/log")"
+# A plugin file is a tar archive (oxiguitar#347): its library is checked,
+# under the plugin file's name.
+mkdir "$work/oxp" "$work/stage"
+echo '{}' > "$work/stage/manifest.json"
+cp "$bin" "$work/stage/plugin.so"
+(cd "$work/stage" && tar --format=ustar -cf "$work/oxp/x.oxp" manifest.json plugin.so)
+"$glibc" 99.0 "$work/oxp" > "$work/log" 2>&1 || { cat "$work/log"; fail "check-glibc.sh refused a plugin file at glibc 99.0"; }
+if "$glibc" 2.0 "$work/oxp" > "$work/log" 2>&1; then fail "check-glibc.sh passed a plugin file's library as needing glibc 2.0 at most"; fi
+grep -q 'x.oxp needs glibc' "$work/log" || fail "check-glibc.sh didn't name the plugin file: $(cat "$work/log")"
 mkdir "$work/none" && echo text > "$work/none/a.txt"
 if "$glibc" 2.35 "$work/none" > "$work/log" 2>&1; then fail "check-glibc.sh passed a folder with no ELF file"; fi
 echo "check-glibc.sh: ok"

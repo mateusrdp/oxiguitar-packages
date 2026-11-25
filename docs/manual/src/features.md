@@ -26,7 +26,7 @@ release); their tests try the same scripts on made-up packages and files.
 | A plugin built into an `.oxp` file for the system it runs on, as `plugin-release.yml` builds it | `linux,windows:stage:trial plugins`, `stage:trial plugins' tests` |
 | A release is checked before it goes out: every zip, `.deb`, `.rpm`, Flatpak, setup `.exe` and `.pkg` there and in SHA256SUMS, with the right sums; a plugin for some systems only says which (`scripts/plugin-package/check-assets.sh`) | `stage:release checks` |
 | A pre-release version (`1.2.0-rc.1`) becomes `1.2.0~rc.1` in the `.rpm`'s name | `stage:release checks` |
-| No ELF file of a plugin needs a newer glibc than allowed (`scripts/plugin-package/check-glibc.sh`) | `stage:release checks` |
+| No ELF file of a plugin, nor the library inside a plugin file (a tar archive), needs a newer glibc than allowed (`scripts/plugin-package/check-glibc.sh`) | `stage:release checks` |
 | Winget manifests for a plugin release, valid for winget (`scripts/make-winget-manifests.sh`) | `windows:stage:winget manifests` |
 
 ## Releases
@@ -34,4 +34,6 @@ release); their tests try the same scripts on made-up packages and files.
 | Feature | Tests |
 | --- | --- |
 | A release's version bumped in one step in a single plugin, a workspace of plugins and a repository with a VERSION file, and the refusals (`scripts/release/bump.sh`) | `stage:release version bump` |
+| A release waits for `ci-success` and runs the failed jobs again (twice at most) when it fails, so a slow mirror or a cancelled runner does not stop it (`scripts/release/wait-for-ci.sh`) | `stage:release wait for CI` |
+| Packages on GitHub's Ubuntu runners are installed through a slow mirror however long it takes, and apt is stopped and tried again on the next mirror only when its downloads stop growing (`scripts/apt-install.sh`) | `stage:apt install` |
 | Every shell script passes shellcheck | `stage:shell lint` |

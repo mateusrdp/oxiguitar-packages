@@ -23,7 +23,15 @@ Everything is done on github.com. A release is two clicks.
    rebuilds the signed apt and dnf repositories.
 
 A plugin is released on its own: neither OxiGuitar nor any other plugin
-needs a release with it. Its packages are made by this repository's
+needs a release with it. The exception is `oxiguitar-audio-cpal`, which the
+four audio output plugins (alsa, pipewire, wasapi, coreaudio) take by tag
+together with the SDK's tag and one cpal version. Its release is the tag:
+there is no GitHub Release page, and nothing in this repository builds it. When
+the SDK tag or cpal's version changes, release `oxiguitar-audio-cpal` first,
+then change both tags in each of the four plugins in one pull request each and
+refresh their `Cargo.lock` (`cargo update -p oxiguitar-audio-cpal -p cpal`);
+the plugins' `deny.toml` must allow its git source. Plugins on different SDK
+tags from the audio layer fail to build with two `Host` types. Its packages are made by this repository's
 `plugin-release.yml` (`@main`), so a change to the packaging, once merged
 into `main` here, is what the plugin's next release uses.
 
@@ -52,6 +60,8 @@ works for every repository, including plugins not made yet.
    - **Contents**: Read and write
    - **Workflows**: Read and write (a merge into `main` may carry workflow files)
    - **Checks**: Read-only (to see that CI passed)
+   - **Actions**: Read and write (to run CI's failed jobs again during a
+     release; see "When CI fails during a release")
    - **Metadata**: Read-only (set by GitHub)
 5. **Where can this GitHub App be installed?**: Only on this account.
 6. **Create GitHub App**. On the page that follows, copy the **App ID**.
@@ -93,21 +103,46 @@ repository has it except `oxiguitar-bettersounds-soundfonts`.
 Run **Release** with repository `oxiguitar`, version `patch` and **dry run**
 ticked. The run's summary shows the files it would change. Then run it for real.
 
+## When CI fails during a release
+
+Most red `ci-success` checks during a release were not the code: a slow
+Ubuntu mirror, a macOS runner cancelled before it started, a 503 from
+GitHub. So when `ci-success` fails on develop or on the release commit, the
+run starts the failed jobs of that CI run again and goes on waiting, twice
+at most (`scripts/release/wait-for-ci.sh`); the run's log says
+"running the failed jobs of ... again" with the link. A real failure fails
+every time and the release stops as before.
+
+This needs the App's **Actions: Read and write** permission. For an App made
+before 24 Nov 2026:
+
+1. github.com, **Settings**, **Developer settings**, **GitHub Apps**,
+   **OxiGuitar Release**, **Edit**, **Permissions & events**.
+2. **Repository permissions**, **Actions**: **Read and write**. **Save changes**.
+3. GitHub then asks the installation to accept it: **Settings**,
+   **Applications**, **Installed GitHub Apps**, **OxiGuitar Release**,
+   **Configure**, **Review request**, **Accept new permissions**.
+
+Without it the run says "no token to run the jobs again" and stops at the
+first failure, as it did before.
+
 ## When a run stops half way
 
 The steps are in order, so look at which one failed:
 
 - **Before "Commit the release on develop"**: nothing was pushed; fix what
   the message says and run again.
-- **After the release commit reached `develop`** (`Release X.Y.Z` is
-  develop's last commit; a token that expired while CI waited, or CI that
-  took longer than two hours): run **Release** again with the **same
+- **After the release commit reached `develop`** (`Release X.Y.Z` is on
+  develop; a token that expired while CI waited, CI that took longer than two
+  hours, or a runner that timed out): run **Release** again with the **same
   version** (`X.Y.Z`, or `patch` if no tag was made since). It finds the
-  release commit, bumps nothing, waits for its CI and merges, tags and pushes
-  as usual. If something else was merged into develop since, develop's last
-  commit is no longer the release: then merge `develop` into `main` with a
-  pull request and create the tag `vX.Y.Z` on `main` by hand (Releases,
-  **Draft a new release**), or ask Claude.
+  release commit among develop's commits since the latest tag, bumps nothing,
+  waits for that commit's CI and merges it, tags and pushes as usual. Commits
+  merged into develop after it (Dependabot's, say) are not part of the
+  release: they stay on develop for the next one. (Before 23 Nov 2026 the
+  release commit had to be develop's last, and a Dependabot merge in between
+  failed the run with "X.Y.Z is not higher than the current version": then
+  merge the release commit, not develop, into `main` by hand and tag it.)
 
 The app's tokens last an hour. The waits for CI read the repository with
 this workflow's own token, and each push gets a token made just before it,

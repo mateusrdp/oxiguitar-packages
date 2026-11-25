@@ -6,6 +6,26 @@ follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- **Plugin files are tar archives** (mateusrdp/oxiguitar#347): `check-glibc.sh` checks the library inside a plugin file (its second member, `plugin.so`) and names the plugin file; a bare library, the format before, is still checked as it is, so releases of either kind pass. The trial plugins' `build-oxp.sh` packs archives as a plugin repository now does: `manifest.json` first, the library second, with the system's `tar`.
+- `scripts/test-all.py` 1.1.0, as in every repository: a plugin repository's plugins are packed as archives when the core it tests against reads them.
+
+### Added
+
+- **oxiguitar-plugin-manager** is in `repositories.txt`, so its releases go into the apt, dnf and Flatpak repositories and the Release button can release it. No package recommends or suggests it, and the packages manual doesn't list it (mateusrdp/oxiguitar#344). Until its first release, the Site workflow skips it.
+
+### Fixed
+
+- **A release no longer stops on a red `ci-success` that a rerun would fix** (oxiguitar 0.21.8, 24 Nov 2026: a slow Ubuntu mirror failed the NET-5 job, and its rerun passed). The Release workflow's waits for CI, on develop and on the release commit, now run the failed jobs again when `ci-success` fails, twice at most, and go on waiting (`scripts/release/wait-for-ci.sh`, tested by `tests/test-wait-for-ci.sh`). This needs the release App's **Actions: Read and write** permission: RELEASING.md, "When CI fails during a release".
+- **A slow or stalled Ubuntu mirror no longer fails a job** (24 Nov 2026: the v0.21.8 packages' AppImage job failed three times on a 185 kB/s mirror although each try had downloaded more). CI, the Site workflow, the plugin release workflow and its trial install packages with `scripts/apt-install.sh` (the same file as OxiGuitar's). It watches the bytes in apt's download folders and stops apt only when they have not grown for 2 minutes (`APT_STALL_SECONDS`), then tries again on the next mirror, up to 5 times (`APT_TRIES`); while they grow, it lets apt finish however long that takes. It keeps what it downloaded and never stops dpkg half way. Its steps' timeouts are 60 minutes, as a last resort. Tested by `tests/test-apt-install.sh`.
+
+- **Running Release again after a stopped run failed when anything had been merged into develop since** (oxiguitar-alsa 0.1.2, 23 Nov 2026: three Dependabot merges after `Release 0.1.2`, so the workflow tried to bump the same version again and `bump.sh` refused). It now finds the release commit anywhere since the latest tag, waits for that commit's CI and merges and tags exactly it.
+
+### Changed
+
+- RELEASING.md says how `oxiguitar-audio-cpal` is released (its tag is the release) and the order of an SDK or cpal bump: that repository first, then the four audio plugins, tags and `Cargo.lock` together.
+
 ### Added
 
 - `oxiguitar-audio-cpal` in `other-repositories.txt`: the library the four audio output plugins share, moved out of OxiGuitar's repository (mateusrdp/oxiguitar#331), is released with the Release button like the plugins; its release is the tag.
