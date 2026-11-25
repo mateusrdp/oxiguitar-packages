@@ -26,7 +26,7 @@ release); their tests try the same scripts on made-up packages and files.
 | A plugin built into an `.oxp` file for the system it runs on, as `plugin-release.yml` builds it | `linux,windows:stage:trial plugins`, `stage:trial plugins' tests` |
 | A release is checked before it goes out: every zip, `.deb`, `.rpm`, Flatpak, setup `.exe` and `.pkg` there and in SHA256SUMS, with the right sums; a plugin for some systems only says which (`scripts/plugin-package/check-assets.sh`) | `stage:release checks` |
 | A pre-release version (`1.2.0-rc.1`) becomes `1.2.0~rc.1` in the `.rpm`'s name | `stage:release checks` |
-| No ELF file of a plugin needs a newer glibc than allowed (`scripts/plugin-package/check-glibc.sh`) | `stage:release checks` |
+| No ELF file of a plugin, nor the library inside a plugin file (a tar archive), needs a newer glibc than allowed (`scripts/plugin-package/check-glibc.sh`) | `stage:release checks` |
 | Winget manifests for a plugin release, valid for winget (`scripts/make-winget-manifests.sh`) | `windows:stage:winget manifests` |
 
 ## Releases

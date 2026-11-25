@@ -6,6 +6,10 @@ follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- **Plugin files are tar archives** (mateusrdp/oxiguitar#347): `check-glibc.sh` checks the library inside a plugin file (its second member, `plugin.so`) and names the plugin file; a bare library, the format before, is still checked as it is, so releases of either kind pass. The trial plugins' `build-oxp.sh` packs archives as a plugin repository now does: `manifest.json` first, the library second, with the system's `tar`.
+
 ### Added
 
 - **oxiguitar-plugin-manager** is in `repositories.txt`, so its releases go into the apt, dnf and Flatpak repositories and the Release button can release it. No package recommends or suggests it, and the packages manual doesn't list it (mateusrdp/oxiguitar#344). Until its first release, the Site workflow skips it.
