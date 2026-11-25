@@ -9,6 +9,7 @@ follows [Semantic Versioning](https://semver.org/).
 ### Changed
 
 - **Plugin files are tar archives** (mateusrdp/oxiguitar#347): `check-glibc.sh` checks the library inside a plugin file (its second member, `plugin.so`) and names the plugin file; a bare library, the format before, is still checked as it is, so releases of either kind pass. The trial plugins' `build-oxp.sh` packs archives as a plugin repository now does: `manifest.json` first, the library second, with the system's `tar`.
+- `scripts/test-all.py` 1.1.0, as in every repository: a plugin repository's plugins are packed as archives when the core it tests against reads them.
 
 ### Added
 
