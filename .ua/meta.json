@@ -29,5 +29,12 @@
     "approved": true,
     "issues": 0,
     "warnings": 13
+<<<<<<< HEAD
+  },
+  "lastAnalyzedCommit": "3567b1d2048946b5dc0b201ed225a9a90ced33d5",
+  "graphCommit": "3567b1d2048946b5dc0b201ed225a9a90ced33d5"
+}
+=======
   }
 }
+>>>>>>> origin/develop
