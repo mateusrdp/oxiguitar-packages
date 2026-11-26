@@ -1,0 +1,308 @@
+{
+  "scriptCompleted": true,
+  "contentDigest": "9b9adacad8c4f519d008f7b7b0e375a2e661eba895f486cf41477e7bc6e8da88",
+  "files": [
+    {
+      "path": ".github/dependabot.yml",
+      "language": "yaml",
+      "sizeLines": 16,
+      "fileCategory": "config"
+    },
+    {
+      "path": ".github/pull_request_template.md",
+      "language": "markdown",
+      "sizeLines": 15,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "language": "yaml",
+      "sizeLines": 223,
+      "fileCategory": "infra"
+    },
+    {
+      "path": ".github/workflows/plugin-publish.yml",
+      "language": "yaml",
+      "sizeLines": 131,
+      "fileCategory": "infra"
+    },
+    {
+      "path": ".github/workflows/plugin-release-try.yml",
+      "language": "yaml",
+      "sizeLines": 76,
+      "fileCategory": "infra"
+    },
+    {
+      "path": ".github/workflows/plugin-release.yml",
+      "language": "yaml",
+      "sizeLines": 467,
+      "fileCategory": "infra"
+    },
+    {
+      "path": ".github/workflows/release.yml",
+      "language": "yaml",
+      "sizeLines": 193,
+      "fileCategory": "infra"
+    },
+    {
+      "path": ".github/workflows/site.yml",
+      "language": "yaml",
+      "sizeLines": 111,
+      "fileCategory": "infra"
+    },
+    {
+      "path": ".ua/fingerprints.json",
+      "language": "json",
+      "sizeLines": 598,
+      "fileCategory": "config"
+    },
+    {
+      "path": ".ua/knowledge-graph.json",
+      "language": "json",
+      "sizeLines": 1021,
+      "fileCategory": "config"
+    },
+    {
+      "path": ".ua/meta.json",
+      "language": "json",
+      "sizeLines": 33,
+      "fileCategory": "config"
+    },
+    {
+      "path": "CLAUDE.md",
+      "language": "markdown",
+      "sizeLines": 33,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "language": "markdown",
+      "sizeLines": 42,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "README.md",
+      "language": "markdown",
+      "sizeLines": 122,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "RELEASING.md",
+      "language": "markdown",
+      "sizeLines": 104,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "clippy.toml",
+      "language": "toml",
+      "sizeLines": 5,
+      "fileCategory": "config"
+    },
+    {
+      "path": "deny.toml",
+      "language": "toml",
+      "sizeLines": 64,
+      "fileCategory": "config"
+    },
+    {
+      "path": "docs/winget.md",
+      "language": "markdown",
+      "sizeLines": 45,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "other-repositories.txt",
+      "language": "txt",
+      "sizeLines": 5,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "plugins/trial/Cargo.toml",
+      "language": "toml",
+      "sizeLines": 20,
+      "fileCategory": "config"
+    },
+    {
+      "path": "plugins/trial/build-oxp.sh",
+      "language": "shell",
+      "sizeLines": 48,
+      "fileCategory": "script"
+    },
+    {
+      "path": "plugins/trial/first/Cargo.toml",
+      "language": "toml",
+      "sizeLines": 17,
+      "fileCategory": "config"
+    },
+    {
+      "path": "plugins/trial/first/manifest.json",
+      "language": "json",
+      "sizeLines": 13,
+      "fileCategory": "config"
+    },
+    {
+      "path": "plugins/trial/first/src/lib.rs",
+      "language": "rust",
+      "sizeLines": 49,
+      "fileCategory": "code"
+    },
+    {
+      "path": "plugins/trial/second/Cargo.toml",
+      "language": "toml",
+      "sizeLines": 17,
+      "fileCategory": "config"
+    },
+    {
+      "path": "plugins/trial/second/manifest.json",
+      "language": "json",
+      "sizeLines": 13,
+      "fileCategory": "config"
+    },
+    {
+      "path": "plugins/trial/second/src/lib.rs",
+      "language": "rust",
+      "sizeLines": 49,
+      "fileCategory": "code"
+    },
+    {
+      "path": "repositories.txt",
+      "language": "txt",
+      "sizeLines": 13,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "rustfmt.toml",
+      "language": "toml",
+      "sizeLines": 3,
+      "fileCategory": "config"
+    },
+    {
+      "path": "scripts/build-site.sh",
+      "language": "shell",
+      "sizeLines": 124,
+      "fileCategory": "script"
+    },
+    {
+      "path": "scripts/check-dco.sh",
+      "language": "shell",
+      "sizeLines": 70,
+      "fileCategory": "script"
+    },
+    {
+      "path": "scripts/fetch-packages.sh",
+      "language": "shell",
+      "sizeLines": 53,
+      "fileCategory": "script"
+    },
+    {
+      "path": "scripts/make-test-packages.sh",
+      "language": "shell",
+      "sizeLines": 51,
+      "fileCategory": "script"
+    },
+    {
+      "path": "scripts/make-winget-manifests.sh",
+      "language": "shell",
+      "sizeLines": 113,
+      "fileCategory": "script"
+    },
+    {
+      "path": "scripts/plugin-package/check-assets.sh",
+      "language": "shell",
+      "sizeLines": 67,
+      "fileCategory": "script"
+    },
+    {
+      "path": "scripts/plugin-package/check-glibc.sh",
+      "language": "shell",
+      "sizeLines": 36,
+      "fileCategory": "script"
+    },
+    {
+      "path": "scripts/plugin-package/deb.sh",
+      "language": "shell",
+      "sizeLines": 102,
+      "fileCategory": "script"
+    },
+    {
+      "path": "scripts/plugin-package/macos-pkg.sh",
+      "language": "shell",
+      "sizeLines": 70,
+      "fileCategory": "script"
+    },
+    {
+      "path": "scripts/plugin-package/rpm.sh",
+      "language": "shell",
+      "sizeLines": 93,
+      "fileCategory": "script"
+    },
+    {
+      "path": "scripts/plugin-package/specs.sh",
+      "language": "shell",
+      "sizeLines": 35,
+      "fileCategory": "script"
+    },
+    {
+      "path": "scripts/plugin-package/windows.iss",
+      "language": "iss",
+      "sizeLines": 71,
+      "fileCategory": "code"
+    },
+    {
+      "path": "scripts/plugin-package/windows.sh",
+      "language": "shell",
+      "sizeLines": 83,
+      "fileCategory": "script"
+    },
+    {
+      "path": "scripts/release/bump.sh",
+      "language": "shell",
+      "sizeLines": 97,
+      "fileCategory": "script"
+    },
+    {
+      "path": "scripts/release/test-bump.sh",
+      "language": "shell",
+      "sizeLines": 121,
+      "fileCategory": "script"
+    },
+    {
+      "path": "scripts/test-install.sh",
+      "language": "shell",
+      "sizeLines": 49,
+      "fileCategory": "script"
+    },
+    {
+      "path": "site-src/index.html",
+      "language": "html",
+      "sizeLines": 38,
+      "fileCategory": "markup"
+    }
+  ],
+  "totalFiles": 46,
+  "filteredByIgnore": 0,
+  "estimatedComplexity": "moderate",
+  "failures": [],
+  "stats": {
+    "filesScanned": 46,
+    "byCategory": {
+      "config": 12,
+      "docs": 8,
+      "infra": 6,
+      "script": 16,
+      "code": 3,
+      "markup": 1
+    },
+    "byLanguage": {
+      "yaml": 7,
+      "markdown": 6,
+      "json": 5,
+      "toml": 6,
+      "txt": 2,
+      "shell": 16,
+      "rust": 2,
+      "iss": 1,
+      "html": 1
+    }
+  }
+}

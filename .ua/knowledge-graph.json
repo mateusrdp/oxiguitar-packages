@@ -1018,5 +1018,23 @@
         "file:site-src/index.html"
       ]
     }
+<<<<<<< HEAD
+  ],
+  "project": {
+    "name": "oxiguitar-packages",
+    "description": "OxiGuitar package distribution (apt, dnf, flatpak)",
+    "languages": [
+      "shell",
+      "python",
+      "yaml",
+      "json",
+      "toml"
+    ],
+    "frameworks": [],
+    "analyzedAt": "2026-11-26T22:00:00.000Z",
+    "analyzedCommit": "3567b1d2048946b5dc0b201ed225a9a90ced33d5"
+  }
+=======
   ]
+>>>>>>> origin/develop
 }
